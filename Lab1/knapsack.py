@@ -1,13 +1,23 @@
 #  Mats Fridberg, mfg17006
 #  Assignment 1, part 1
-
+import time
 
 #Class for the items
 class Item:
     def __init__(self, item_id, b, w):
         self.item_id = item_id
-        self.b = b
-        self.w = w
+        self.benefit = b
+        self.weight = w
+
+# Class that will contain the current state and values of the current node
+class Node:
+    def __init__(self, item_id, s, b, w , cb, cw):
+        self.item_id = item_id
+        self.solution = s #type: list
+        self.benefit = b
+        self.weight = w
+        self.current_benefit = cb
+        self.current_weight = cw
 
 #Read the input data
 def read_from_file():
@@ -38,12 +48,17 @@ def read_from_file():
     # Return relevant data
     return items, dimension, max_weight
 
+def BFS():
+    print("Init Breadth-first search")
 
-    
-    # print(data)
+def DFS():
+    print("Init Depth-first search")
+
+
 
 if __name__ == "__main__":
-    
+    time_start = time.time()
     items, dimension, max_weight = read_from_file()
 
-    print(items, dimension, max_weight)
+    time_end = time.time()
+    print(time_end-time_start)
