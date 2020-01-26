@@ -1,6 +1,7 @@
 #  Mats Fridberg, mfg17006
 #  Assignment 1, part 1
 import time
+from queue import Queue
 
 #Class for the items
 class Item:
@@ -46,19 +47,27 @@ def read_from_file():
         items.append(Item(item_id, item_b, item_w))
 
     # Return relevant data
-    return items, dimension, max_weight
+    return items, max_weight
 
-def BFS():
+def BFS(items, max_weight):
+
+    # Create and init the tree 
+    empty_tree = []
+    while len(empty_tree) < len(items):
+        empty_tree.append(False)
+
+    
     print("Init Breadth-first search")
+    return solution
 
 def DFS():
     print("Init Depth-first search")
 
-
-
 if __name__ == "__main__":
     time_start = time.time()
-    items, dimension, max_weight = read_from_file()
+    items, max_weight = read_from_file()
+
+    solution = BFS(items, max_weight)
 
     time_end = time.time()
     print(time_end-time_start)
