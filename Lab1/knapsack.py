@@ -2,6 +2,7 @@
 #  Assignment 1, part 1
 import time
 from queue import Queue
+from copy import copy
 
 #Class for the items
 class Item:
@@ -12,13 +13,24 @@ class Item:
 
 # Class that will contain the current state and values of the current node
 class Node:
+    solution = []
     def __init__(self, item_id, s, b, w , cb, cw):
         self.item_id = item_id
-        self.solution = s #type: list
         self.benefit = b
         self.weight = w
-        self.current_benefit = cb
-        self.current_weight = cw
+        self.solution = s #type: list
+        self.cb = cb
+        self.cw = cw
+
+class Solution:
+    solution = []
+    benefit = 0
+    weight = 0
+
+    def __init__(self, s, b, w):
+        self.solution = s
+        self.benefit = b
+        self.weight = w
 
 #Read the input data
 def read_from_file():
@@ -51,23 +63,72 @@ def read_from_file():
 
 def BFS(items, max_weight):
 
+    depth = len(items)
+    solution_bfs = Solution([], 0, 0)
+
+    print("Init Breadth-first search")
     # Create and init the tree 
     empty_tree = []
+    # Append -1 to all nodes in the tree, will represent an empty spot
     while len(empty_tree) < len(items):
-        empty_tree.append(False)
+        empty_tree.append(-1)
 
+    # inititate an empty node 
+    init_node = Node(0, empty_tree, 0, 0, 0, 0)
     
-    print("Init Breadth-first search")
-    return solution
+    # Create a queue
+    queue = Queue()
+    queue.put(init_node)
+    # Run while there is items in the queue
+    while not queue.empty():
+        node = queue.get()
+        if check_if_solution(node):
+            for i in range(0, len(node.solution)):
+                #-1 means it is an empty spot in the tree
+                if node.solution[i] == -1:
+                    depth = i
+                    break
+            # Go here only if item will not exceed max weight
+            if (node.cw+items[depth].weight) <= max_weight:
+                if depth < len(items):
+                    # We use copy so that we get a shallow copy of list
+                    sol_1 = copy(node.solution)
+                    sol_1[depth] = 0
+                    child = Node(depth+1, sol_1, items[depth].benefit, items[depth].weight, node.cb, node.cw)
+                    queue.put(child)
+                    sol_2 = copy(node.solution)
+                    sol_2[depth] = 1
+                    child = Node( depth+1, sol_2, items[depth].benefit, items[depth].weight, node.cb+items[depth].benefit, node.cw+items[depth].weight)
+                    queue.put(child)
+                    
+        # Set the new best solution
+        if solution_bfs.benefit < node.cb:
+            solution_bfs.solution = node.solution
+            solution_bfs.benefit = node.cb
+            solution_bfs.weight = node.cw
+    return solution_bfs
 
 def DFS():
     print("Init Depth-first search")
 
+def check_if_solution(node):
+    for i in range(len(node.solution)):
+        if node.solution[i] == -1:
+            return True
+    return False
+
 if __name__ == "__main__":
     time_start = time.time()
     items, max_weight = read_from_file()
-
     solution = BFS(items, max_weight)
-
     time_end = time.time()
-    print(time_end-time_start)
+    id_list = []
+    a = 1
+    for i in solution.solution:
+        if(i != 0):
+            id_list.append(a)
+        a+=1
+
+    print("Solution: \n", "Items:  ", id_list, "\n\tBenefit: ", solution.benefit,  "\n\tWeight: ", solution.weight)
+
+    print("Duration: ", time_end-time_start)
