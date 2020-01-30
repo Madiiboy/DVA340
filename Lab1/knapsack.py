@@ -69,9 +69,9 @@ def BFS(items, max_weight):
     print("Init Breadth-first search")
     # Create and init the tree 
     empty_tree = []
-    # Append -1 to all nodes in the tree, will represent an empty spot
+    # Append False to all nodes in the tree, will represent an empty spot
     while len(empty_tree) < len(items):
-        empty_tree.append(-1)
+        empty_tree.append(False)
 
     # inititate an empty node 
     init_node = Node(0, empty_tree, 0, 0, 0, 0)
@@ -84,8 +84,8 @@ def BFS(items, max_weight):
         node = queue.get()
         if check_if_solution(node):
             for i in range(0, len(node.solution)):
-                #-1 means it is an empty spot in the tree
-                if node.solution[i] == -1:
+                #False means it is an empty spot in the tree
+                if node.solution[i] is False:
                     depth = i
                     break
             # Go here only if item will not exceed max weight
@@ -108,19 +108,65 @@ def BFS(items, max_weight):
             solution_bfs.weight = node.cw
     return solution_bfs
 
-def DFS():
-    print("Init Depth-first search")
+def DFS(items, max_weight):
 
+    depth = len(items)
+    solution_bfs = Solution([], 0, 0)
+
+    print("Init Depth-first search")
+    # Create and init the tree 
+    empty_tree = []
+    # Append False to all nodes in the tree, will represent an empty spot
+    while len(empty_tree) < len(items):
+        empty_tree.append(False)
+
+    # inititate an empty node 
+    init_node = Node(0, empty_tree, 0, 0, 0, 0)
+    
+    # Create a stack
+    stack = []
+    stack.append(init_node)
+
+    while stack:
+        node = stack.pop()
+        if check_if_solution(node):
+            for i in range(0, len(node.solution)):
+                #False means it is an empty spot in the tree
+                if node.solution[i] is False:
+                    depth = i
+                    break
+            # Go here only if item will not exceed max weight
+            if (node.cw+items[depth].weight) <= max_weight:
+                if depth < len(items):
+                    # We use copy so that we get a shallow copy of list
+                    sol_1 = copy(node.solution)
+                    sol_1[depth] = 0
+                    child = Node(depth+1, sol_1, items[depth].benefit, items[depth].weight, node.cb, node.cw)
+                    stack.append(child)
+                    sol_2 = copy(node.solution)
+                    sol_2[depth] = 1
+                    child = Node( depth+1, sol_2, items[depth].benefit, items[depth].weight, node.cb+items[depth].benefit, node.cw+items[depth].weight)
+                    stack.append(child)
+                    
+        # Set the new best solution
+        if solution_bfs.benefit < node.cb:
+            solution_bfs.solution = node.solution
+            solution_bfs.benefit = node.cb
+            solution_bfs.weight = node.cw
+    return solution_bfs
+
+# Function that checks if we have visited all the nodes in the tree
 def check_if_solution(node):
     for i in range(len(node.solution)):
-        if node.solution[i] == -1:
+        if node.solution[i] is False:
             return True
     return False
 
 if __name__ == "__main__":
     time_start = time.time()
     items, max_weight = read_from_file()
-    solution = BFS(items, max_weight)
+    # solution = BFS(items, max_weight)
+    solution = DFS(items, max_weight)
     time_end = time.time()
     id_list = []
     a = 1
