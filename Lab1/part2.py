@@ -1,0 +1,81 @@
+
+class Distance():
+    def __init__(self, o, d, v):
+        self.origin = o
+        self.destination = d
+        self.val = v
+
+# Straigh line distance is usually called "fågelvägen" in swedish, therefore name bird
+class Bird():
+    def __init__(self, o, v):
+        self.origin = o
+        self.val = v
+
+class City():
+    def __init__(self, city, adjecents):
+        self.city = city
+        self.adjecents = adjecents
+
+
+def readFile():
+    file = open("spain_map.txt", "r")
+    # Skip first four lines
+    for _ in range(5):
+        file.readline()
+    
+    distance = []
+    while True:
+        temp = file.readline().split()
+        if len(temp) < 3:
+            break
+        distance.append(Distance(temp[0], temp[1], temp[2]))
+        # print(temp)
+
+    for _ in range(2):
+        file.readline()
+
+    birdie = []
+    while True:
+        temp = file.readline().split()
+
+        if len(temp) < 2:
+            break
+        birdie.append(Bird(temp[0], temp[1]))
+
+    # print(file.readline())
+    return distance, birdie
+
+def GBFS(distance, bird, source, dest):
+
+    tree = []
+    unique_cities = []
+
+    for d in distance:
+        if d.origin not in unique_cities:
+            unique_cities.append(d.origin)
+
+    # print(type(distance[0].origin))
+    dictionary = {}
+
+    for u in unique_cities:
+        dictionary[u] = {}
+
+    
+    print(dictionary)
+    
+
+
+    # print(l)
+
+
+
+
+
+
+
+
+if __name__ == "__main__":
+    src = "Malaga"
+    dest = "VValladolid"
+    distance, bird = readFile()
+    GBFS(distance, bird, src, dest)

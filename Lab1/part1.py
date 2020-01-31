@@ -165,8 +165,8 @@ def check_if_solution(node):
 if __name__ == "__main__":
     time_start = time.time()
     items, max_weight = read_from_file()
-    # solution = BFS(items, max_weight)
-    solution = DFS(items, max_weight)
+    solution = BFS(items, max_weight)
+    # solution = DFS(items, max_weight)
     time_end = time.time()
     id_list = []
     a = 1
