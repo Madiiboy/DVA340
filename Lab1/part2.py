@@ -47,6 +47,9 @@ def readFile():
 
 def GBFS(distance, bird, source, dest):
 
+    # for b in bird:
+    #     print(b.origin)
+
     tree = []
     unique_cities = []
 
@@ -66,9 +69,26 @@ def GBFS(distance, bird, source, dest):
         dictionary[d.origin][d.destination] = int(d.val)
         dictionary[d.destination][d.origin] = int(d.val)
 
-    # Check adjecent cities starting at Malaga
-    # Pick the neighbor with the smallest bird distance
-    # Repeat until we have reached Valladolid
+
+    current = "Malaga"
+
+    while True:
+
+        # Check adjecent cities starting at Malaga
+        # Pick the neighbor with the smallest bird distance
+        # Repeat until we have reached Valladolid
+        tree = []
+        for d in distance:
+            if d.origin == current:
+                tree.append(d.destination)
+            
+        for b in bird:
+            if b.origin in tree:
+                
+
+
+            
+
 
     # print(l)
 
