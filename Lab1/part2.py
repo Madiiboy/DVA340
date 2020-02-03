@@ -53,17 +53,22 @@ def GBFS(distance, bird, source, dest):
     for d in distance:
         if d.origin not in unique_cities:
             unique_cities.append(d.origin)
-
+        if d.destination not in unique_cities:
+            unique_cities.append(d.destination)
+    # print(len(unique_cities))
     # print(type(distance[0].origin))
     dictionary = {}
 
     for u in unique_cities:
         dictionary[u] = {}
 
-    
-    print(dictionary)
-    
+    for d in distance:
+        dictionary[d.origin][d.destination] = int(d.val)
+        dictionary[d.destination][d.origin] = int(d.val)
 
+    # Check adjecent cities starting at Malaga
+    # Pick the neighbor with the smallest bird distance
+    # Repeat until we have reached Valladolid
 
     # print(l)
 
