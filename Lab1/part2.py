@@ -1,3 +1,4 @@
+from queue import PriorityQueue
 
 class Distance():
     def __init__(self, o, d, v):
@@ -34,13 +35,15 @@ def readFile():
     for _ in range(2):
         file.readline()
 
-    birdie = []
+    birdie = {}
     while True:
         temp = file.readline().split()
 
         if len(temp) < 2:
             break
-        birdie.append(Bird(temp[0], temp[1]))
+        birdie[temp[0]] = temp[1]
+
+    print(birdie['Granada'])
 
     # print(file.readline())
     return distance, birdie
@@ -69,28 +72,26 @@ def GBFS(distance, bird, source, dest):
         dictionary[d.origin][d.destination] = int(d.val)
         dictionary[d.destination][d.origin] = int(d.val)
 
+    
+    # print(dictionary)
+    # print(bird)
+    # print(start)
 
-    current = "Malaga"
+    target = "Valladolid"
+    queue = PriorityQueue()
+    #queue.put((unique_cities["Malaga"]['Bird'], "Malaga"))
+    queue.put((bird['Malaga'], 'Malaga'))
 
-    while True:
+    # print(queue.get())
+    # print(dictionary)
+    visited = []
+    node = queue.get()
+    while queue:
 
-        # Check adjecent cities starting at Malaga
-        # Pick the neighbor with the smallest bird distance
-        # Repeat until we have reached Valladolid
-        tree = []
-        for d in distance:
-            if d.origin == current:
-                tree.append(d.destination)
-            
-        for b in bird:
-            if b.origin in tree:
-                
-
-
-            
-
-
-    # print(l)
+        for s in dictionary[node[1]]:
+            print(s)
+            queue.put((bird[s], s))
+   
 
 
 
