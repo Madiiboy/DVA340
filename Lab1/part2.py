@@ -7,10 +7,10 @@ class Distance():
         self.val = v
 
 # Straigh line distance is usually called "fågelvägen" in swedish, therefore name bird
-class Bird():
-    def __init__(self, o, v):
-        self.origin = o
-        self.val = v
+# class Bird():
+#     def __init__(self, o, v):
+#         self.origin = o
+#         self.val = v
 
 class City():
     def __init__(self, city, adjecents):
@@ -41,9 +41,9 @@ def readFile():
 
         if len(temp) < 2:
             break
-        birdie[temp[0]] = temp[1]
+        birdie[temp[0]] = int(temp[1])
 
-    print(birdie['Granada'])
+    # print(birdie['Granada'])
 
     # print(file.readline())
     return distance, birdie
@@ -73,33 +73,37 @@ def GBFS(distance, bird, source, dest):
         dictionary[d.destination][d.origin] = int(d.val)
 
     
-    # print(dictionary)
+    print(dictionary)
     # print(bird)
     # print(start)
 
     target = "Valladolid"
     queue = PriorityQueue()
-    #queue.put((unique_cities["Malaga"]['Bird'], "Malaga"))
     queue.put((bird['Malaga'], 'Malaga'))
-
-    # print(queue.get())
-    # print(dictionary)
     visited = []
-    node = queue.get()
+    examined = []
+    distance = 0
+
     while queue:
+        node = queue.get() 
+        # print(node)
+        if node[1] == target:
+            print("We found our way!")
+            break
+        else:
+            for s in dictionary[node[1]]:
+                if not s in visited:
+                    # print(visited)
+                    visited.append(s)
+                    queue.put((bird[s], s))
+                    print(bird[s])
+                    # print(dictionary[s])
+                    # distance += dictionary[s]
+            examined.append(node[1])
+    print(examined)
+                
 
-        for s in dictionary[node[1]]:
-            print(s)
-            queue.put((bird[s], s))
    
-
-
-
-
-
-
-
-
 if __name__ == "__main__":
     src = "Malaga"
     dest = "VValladolid"
