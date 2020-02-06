@@ -7,9 +7,8 @@ class Distance():
         self.destination = d
         self.val = v
 
-
 def readFile():
-    file = open("spain_map.txt", "r")
+    file = open('spain_map.txt', 'r')
     # Skip first four lines
     for _ in range(5):
         file.readline()
@@ -26,7 +25,7 @@ def readFile():
     for _ in range(2):
         file.readline()
 
-    # Create a dictionary for the straight line distance
+    # Create a cities for the straight line distance
     straight_line = {}
     while True:
         temp = file.readline().split()
@@ -37,9 +36,8 @@ def readFile():
 
     return distance, straight_line
 
-def GBFS(distance, bird, source, dest):
+def GBFS(distance, straight_line, dest):
 
-    target = "Valladolid"
     unique_cities = []
 
     # Fills a list of the unique cities
@@ -49,43 +47,67 @@ def GBFS(distance, bird, source, dest):
         if d.destination not in unique_cities:
             unique_cities.append(d.destination)
   
-    dictionary = {}
-    # Add all cities to the dictionary
+    cities = {}
+    # Add all cities to the cities
     for u in unique_cities:
-        dictionary[u] = {}
+        cities[u] = {}
 
     # Add all the neighbors to each city
     for d in distance:
-        dictionary[d.origin][d.destination] = int(d.val)
-        dictionary[d.destination][d.origin] = int(d.val)
+        cities[d.origin][d.destination] = int(d.val)
+        cities[d.destination][d.origin] = int(d.val)
 
     # Create a queue that sorts depending on the shortest straight distance
     queue = PriorityQueue()
-    queue.put((bird['Malaga'], 'Malaga')) #Putting the start value in the queue
+    queue.put((straight_line['Malaga'], 'Malaga')) #Putting the start value in the queue
     visited = []
     examined = []
 
     while queue:
         node = queue.get() 
         # print(node)
-        if node[1] == target:
+        if node[1] == dest:
             examined.append(node[1])
-            print("We found our way!")
+            print('We found our way!')
             break
         else:
-            for s in dictionary[node[1]]:
+            for s in cities[node[1]]:
                 if not s in visited:
-                    visited.append(s)
-                    queue.put((bird[s], s))
+                    print(s)
+                    queue.put((straight_line[s], s))
             examined.append(node[1])
     print(examined)
-                  
-if __name__ == "__main__":
-    src = "Malaga"
-    dest = "VValladolid"
-    distance, bird = readFile()
+
+def AStar(distance, straight_line, dest):
+    # Check straight_line but save the lenght of the current path
+
+    unique_cities = []
+
+    # Fills a list of the unique cities
+    for d in distance:
+        if d.origin not in unique_cities:
+            unique_cities.append(d.origin)
+        if d.destination not in unique_cities:
+            unique_cities.append(d.destination)
+
+    cities = {}
+    # Add all cities to the cities
+    for u in unique_cities:
+        cities[u] = {}
+
+    # Add all the neighbors to each city
+    for d in distance:
+        cities[d.origin][d.destination] = int(d.val)
+        cities[d.destination][d.origin] = int(d.val)
+
+    print(cities['Almeria']['Granada'])
+
+if __name__ == '__main__':
+    dest = 'Valladolid'
+    distance, straight_line = readFile()
 
     start = time.time()
-    GBFS(distance, bird, src, dest)
+    # GBFS(distance, straight_line, dest)
+    AStar(distance, straight_line, dest)
     end = time.time()
-    print(end-start)
+    print('Time elapsed:', end-start)
