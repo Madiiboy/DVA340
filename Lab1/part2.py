@@ -1,21 +1,11 @@
 from queue import PriorityQueue
+import time
 
 class Distance():
     def __init__(self, o, d, v):
         self.origin = o
         self.destination = d
         self.val = v
-
-# Straigh line distance is usually called "fågelvägen" in swedish, therefore name bird
-# class Bird():
-#     def __init__(self, o, v):
-#         self.origin = o
-#         self.val = v
-
-class City():
-    def __init__(self, city, adjecents):
-        self.city = city
-        self.adjecents = adjecents
 
 
 def readFile():
@@ -25,87 +15,77 @@ def readFile():
         file.readline()
     
     distance = []
+    # Read all lines and append to distance list
     while True:
         temp = file.readline().split()
         if len(temp) < 3:
             break
         distance.append(Distance(temp[0], temp[1], temp[2]))
-        # print(temp)
 
+    # Skip two lines
     for _ in range(2):
         file.readline()
 
-    birdie = {}
+    # Create a dictionary for the straight line distance
+    straight_line = {}
     while True:
         temp = file.readline().split()
 
         if len(temp) < 2:
             break
-        birdie[temp[0]] = int(temp[1])
+        straight_line[temp[0]] = int(temp[1])
 
-    # print(birdie['Granada'])
-
-    # print(file.readline())
-    return distance, birdie
+    return distance, straight_line
 
 def GBFS(distance, bird, source, dest):
 
-    # for b in bird:
-    #     print(b.origin)
-
-    tree = []
+    target = "Valladolid"
     unique_cities = []
 
+    # Fills a list of the unique cities
     for d in distance:
         if d.origin not in unique_cities:
             unique_cities.append(d.origin)
         if d.destination not in unique_cities:
             unique_cities.append(d.destination)
-    # print(len(unique_cities))
-    # print(type(distance[0].origin))
+  
     dictionary = {}
-
+    # Add all cities to the dictionary
     for u in unique_cities:
         dictionary[u] = {}
 
+    # Add all the neighbors to each city
     for d in distance:
         dictionary[d.origin][d.destination] = int(d.val)
         dictionary[d.destination][d.origin] = int(d.val)
 
-    
-    print(dictionary)
-    # print(bird)
-    # print(start)
-
-    target = "Valladolid"
+    # Create a queue that sorts depending on the shortest straight distance
     queue = PriorityQueue()
-    queue.put((bird['Malaga'], 'Malaga'))
+    queue.put((bird['Malaga'], 'Malaga')) #Putting the start value in the queue
     visited = []
     examined = []
-    distance = 0
 
     while queue:
         node = queue.get() 
         # print(node)
         if node[1] == target:
+            examined.append(node[1])
             print("We found our way!")
             break
         else:
             for s in dictionary[node[1]]:
                 if not s in visited:
-                    # print(visited)
                     visited.append(s)
                     queue.put((bird[s], s))
-                    print(bird[s])
-                    # print(dictionary[s])
-                    # distance += dictionary[s]
             examined.append(node[1])
     print(examined)
-                
-
-   
+                  
 if __name__ == "__main__":
     src = "Malaga"
     dest = "VValladolid"
     distance, bird = readFile()
+
+    start = time.time()
     GBFS(distance, bird, src, dest)
+    end = time.time()
+    print(end-start)
