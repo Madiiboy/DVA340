@@ -100,7 +100,28 @@ def AStar(distance, straight_line, dest):
         cities[d.origin][d.destination] = int(d.val)
         cities[d.destination][d.origin] = int(d.val)
 
-    print(cities['Almeria']['Granada'])
+    # Create a queue that sorts depending on the shortest straight distance
+    queue = PriorityQueue()
+    queue.put((straight_line['Malaga'], 'Malaga')) #Putting the start value in the queue
+    visited = []
+    examined = []
+    dist = 0
+
+    while queue:
+        node = queue.get() 
+        if node[1] == dest:
+            examined.append(node[1])
+            print('We found our way!')
+            break
+        else:
+            for s in cities[node[1]]:
+                if not s in visited:
+                    # Difference between A* and GBFS is adding the path between the cities with the heuristics
+                    queue.put((straight_line[s]+cities[node[1]][s], s))
+            examined.append(node[1])
+    print(examined)
+
+
 
 if __name__ == '__main__':
     dest = 'Valladolid'
