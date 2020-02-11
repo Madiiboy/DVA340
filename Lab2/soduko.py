@@ -32,15 +32,34 @@ def readFile():
     
 
 def checkIfValid(puzzle, pos, val):
-    print(puzzle[pos[0]][pos[1]])
+
+    # for x in range(9):
+
+    # # Check row and column if value is within that row
+    # for x in range(9):
+    #     for y in range(9):
+    #         if puzzle[x][y] is val:
+    #             print("nono")
+    #             return False
+    #         if puzzle[y][x] is val:
+    #             print("nono")
+    #             return False
+
 
 def solve(puzzle):
-    # find an empty slot
+    
+    # Make this function recursive
+
+                
+
+# find an empty slot
+def findEmptySlot(puzzle):
     for i in range(len(puzzle)):
         for j in range(len(puzzle)):
             if puzzle[i][j] is '0':
-                checkIfValid(puzzle, (i, j))
-    
+                return (i, j)
+    return False
+
 
 if __name__ == "__main__":
     puzzles = readFile()
