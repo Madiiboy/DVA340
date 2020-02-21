@@ -1,16 +1,18 @@
 from random import shuffle
 import copy
 import math
+from queue import PriorityQueue
+import time
 
 class City:
-    def __init__(self, id, x, y):
-        self.id = id
+    def __init__(self, _id, x, y):
+        self.id = _id
         self.x = x
         self.y = y
 
 class Fitness:
-    def __init__(self, id, value):
-        self.id = id
+    def __init__(self, _id, value):
+        self.id = _id
         self.value = value
 
 def readFromFile():
@@ -32,69 +34,93 @@ def readFromFile():
     return cities, dimension
 
 def createPopulation(c,d):
-    population = []
+    return [randomPopulation(c, i) for i in range(60)]
 
-    # print(population)
-    for _ in range(50):
-        population.append(randomPopulation(c))
-
-    return population
-    # print(len(population))
-
-    # for i in range(len(population)):
-    #     for j in range(len(c)):
-    #         print(population[i][j].id)
-    #     print('--------------------------------')
-
-    # print(len(population))
-
-    # print(len(population))
-    # for p in population:
-    #     print(p)
-
-def randomPopulation(c):
+def randomPopulation(c, index):
     shuffled = c.copy()
     shuffle(shuffled)
-    return shuffled
+    return (index, shuffled)
 
 def calcDistance(a, b):
-    distance = math.sqrt((((b.x - a.x)**2)+(b.y - a.y)**2))
+
+    distance = float(math.sqrt((((b.x - a.x)**2)+(b.y - a.y)**2)))
     return distance
 
+# Sort the best solutions. Return priority queue sorted on the shortest distance 
 def fitness(population):
-    current_best = 100000 #setting high start values
-    current_next_best = 100000
-    current_best_index = 0
-    current_next_best_index = 0
-
-    for i, pop in enumerate(population):
+    queue = PriorityQueue()
+    for _, pop in enumerate(population):
         tot_distance = 0
-        # print(len(pop))
-        for i in range(len(pop)):
-            if i == len(pop)-1: #If we are at the final index, add with the first
-                tot_distance += calcDistance(pop[i], pop[0])
+        p_index = pop[0]
+        p_data = pop[1]
+        for i in range(len(pop[1])):
+            if i == len(pop[1])-1: #If we are at the final index, add with the first
+                tot_distance += calcDistance(p_data[i], p_data[0])
+                queue.put((tot_distance, p_index))
                 break
-            tot_distance += calcDistance(pop[i], pop[i+1])
+            tot_distance += calcDistance(p_data[i], p_data[i+1])
+   
+    # for _ in range(60):
+    #     print(queue.get())
     
-    # Save current best index and value
+    return queue
 
-    #     if tot_distance < current_best:
-    #         current_next_best_index = current_best_index
-    #         current_best_index = i
-    #         current_next_best = current_best
-    #         current_best = tot_distance
+def breed(queue, population):
 
-    # print('--------------------------------')
-    # print('Index:', current_best_index, 'Value:', current_best)
-    # print('Index:', current_next_best_index, 'Value:', current_next_best)
-        # print(tot_distance)
-        # print('------------------')
+    new_population = []
 
+    # for _ in range(60):
+    #     print(queue.get())
+    #Index of our population
+    # for p in population:
+    #     print(p[0])
+
+    for _ in range(1):
+        p1, p2 = queue.get(), queue.get()
+        p1_index, p2_index = p1[1], p2[1]
+        # print(p1_index, p2_index)
+
+        #This is the data to be copied into our new child
+        parent_1 = population[p1_index][1]
+        parent_2 = population[p2_index][1]
+
+        #Do the breeding here!!!
+
+        print(parent_1)
+        
+
+
+
+
+
+        
+
+    
+    #return the new population
+    return
 
 if __name__ == '__main__':
     cities, dim = readFromFile()
+    start = time.time()
     init_population = createPopulation(cities, dim)
+
     fitness(init_population)
+    end = time.time()
+    # print(end-start)
+
+    # print(init_population)
+
+    
+
+    population = init_population.copy()
+    gen = 0
+
+    # while True:
+    gen += 1
+    order = fitness(population)
+    breed(order, population)
+
+    
     # d = calcDistance(ci_sh[0], ci_sh[1]) #testing purpouses
     tot_distance = 0
     # print(ci_sh[0].id)
