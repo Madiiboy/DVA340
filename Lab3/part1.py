@@ -5,19 +5,15 @@ import math
 from queue import PriorityQueue
 import time
 
+best = 0
+
 class City:
     def __init__(self, _id, x, y):
-        self.id = _id
+        self.ide = _id
         self.x = x
         self.y = y
 
-class Fitness:
-    def __init__(self, _id, value):
-        self.id = _id
-        self.value = value
-
 def readFromFile():
-
     file = open('tsp.txt', 'r')
     for _ in range(3):
         file.readline()
@@ -34,115 +30,166 @@ def readFromFile():
 
     return cities, dimension
 
-def createPopulation(c,d):
-    return [randomPopulation(c, i) for i in range(60)]
 
-def randomPopulation(c, index):
+def createPopulation(c):
+    return [randomPopulation(c) for i in range(60)]
+
+
+def randomPopulation(c):
     shuffled = c.copy()
     shuffle(shuffled)
-    return (index, shuffled)
+    return (shuffled)
+
 
 def calcDistance(a, b):
-    distance = float(math.sqrt((((b.x - a.x)**2)+(b.y - a.y)**2)))
+    distance = float(math.sqrt((((b.x - a.x) ** 2) + (b.y - a.y) ** 2)))
     return distance
 
-# Sort the best solutions. Return priority queue sorted on the shortest distance 
+
+# Sort the best solutions. Return priority queue sorted on the shortest distance
 def fitness(population):
-    queue = PriorityQueue()
+    global best
+    population_fitness = []
     for _, pop in enumerate(population):
         tot_distance = 0
-        p_index = pop[0]
-        p_data = pop[1]
-        for i in range(len(pop[1])):
-            if i == len(pop[1])-1: #If we are at the final index, add with the first
-                tot_distance += calcDistance(p_data[i], p_data[0])
-                queue.put((tot_distance, p_index))
+        for i in range(len(pop)):
+            if i == len(pop) - 1:  # If we are at the final index, add with the first
+                tot_distance += calcDistance(pop[i], pop[0])
+                population_fitness.append((tot_distance, pop))
                 break
-            tot_distance += calcDistance(p_data[i], p_data[i+1])
-   
-    # for _ in range(60):
-    #     print(queue.get())
-    
-    return queue
+            tot_distance += calcDistance(pop[i], pop[i + 1])
 
-def breed(queue, population):
+    sorted_pop = []
+    sort = sorted(population_fitness)
+    best = sort[0][0]
+    for p in sort:
+        sorted_pop.append(p[1])
+
+    return sorted_pop
+
+def breed2(population):
 
     new_population = []
+    # Byt ut 2 mot 30
 
-    # for _ in range(60):
-    #     print(queue.get())
-    #Index of our population
-    # for p in population:
-    #     print(p[0])
+    for i in range(0, 30, 2):
+        p1 = population[i]
+        p2 = population[i + 1]
 
-    #This should run 15 times!!!
-    for _ in range(1):
-        p1, p2 = queue.get(), queue.get()
-        p1_index, p2_index = p1[1], p2[1]
-        # print(p1_index, p2_index)
+        r1 = random.randint(0, len(population[0]) / 2)
+        r2 = random.randint(len(population[0]) / 2, len(population[0]))
 
-        #This is the data to be copied into our new child
-        parent_1 = population[p1_index][1]
-        parent_2 = population[p2_index][1]
+        c1 = [None] * len(population[0])
+        c2 = [None] * len(population[0])
 
-        # for p in parent_1:
-        #     print(p.id)
+        c1[r1:r2] = p1[r1:r2].copy()
+        c2[r1:r2] = p2[r1:r2].copy()
 
-        r1 = random.randint(0, 52/2)
-        r2 = random.randint(52/2, 52)
-        c1 = [None] * 52
-        c2 = [None] * 52
+        cities_in = []
+        cities_in_2 = []
 
-        c1[r1:r2] = parent_1[r1:r2].copy()
-        c2[r1:r2] = parent_2[r1:r2].copy()
+        for c in c1:
+            if not c is None:
+                cities_in.append(c.ide)
+        for c in c2:
+            if not c is None:
+                cities_in_2.append(c.ide)
 
-        id1 = []
-        id2 = []
+        for i, c in enumerate(c1):
+            if c is None:
+                for p in p2:
+                    if not p.ide in cities_in:
+                        cities_in.append(p.ide)
+                        c1[i] = p
+                        break
 
-        for i in range(len(c1)):
-            if not c1[i] is None:
-                id1.append(c1[i].id)
-            if not c2[i] is None:
-                id2.append(c2[i].id)
+        for i, c in enumerate(c2):
+            if c is None:
+                for p in p1:
+                    if not p.ide in cities_in_2:
+                        cities_in.append(p.ide)
+                        c2[i] = p
+                        break
 
-        #Add values to c1 and c2 here without generating any duplicates!!
+        rand = random.randint(0,100)
+        if rand > 50:
+            ri, ri2 = random.randint(0, len(population[0]) - 1), random.randint(0, len(population[0]) - 1)
+            c1[ri], c1[ri2] = c1[ri2], c1[ri]
+            c2[ri], c2[ri2] = c2[ri2], c2[ri]
 
-    #return the new population
-    return
+        new_population.append(p1)
+        new_population.append(p2)
+        new_population.append(c1)
+        new_population.append(c1)
+
+    return new_population
+
+def breed(population):
+
+        new_population = []
+        #Byt ut 2 mot 30
+
+        for i in range(0, 30, 2):
+            p1 = population[i]
+            p2 = population[i+1]
+
+            r1 = random.randint(0, len(population[0])/2)
+            r2 = random.randint(len(population[0])/2, len(population[0]))
+
+            c1 = [None] * len(population[0])
+            c2 = [None] * len(population[0])
+
+            c1[r1:r2] = p1[r1:r2].copy()
+            c2[r1:r2] = p2[r1:r2].copy()
+
+            cities_in = []
+            cities_in_2 = []
+
+            for c in c1:
+                if not c is None:
+                    cities_in.append(c.ide)
+            for c in c2:
+                if not c is None:
+                    cities_in_2.append(c.ide)
+
+            for i,c in enumerate(c1):
+                if c is None:
+                    for p in p2:
+                        if not p.ide in cities_in:
+                            cities_in.append(p.ide)
+                            c1[i] = p
+                            break
+
+            for i,c in enumerate(c2):
+                if c is None:
+                    for p in p1:
+                        if not p.ide in cities_in_2:
+                            cities_in.append(p.ide)
+                            c2[i] = p
+                            break
+
+            ri, ri2 = random.randint(0, len(population[0])-1), random.randint(0, len(population[0])-1)
+            c1[ri], c1[ri2] = c1[ri2], c1[ri]
+            c2[ri], c2[ri2] = c2[ri2], c2[ri]
+
+            new_population.append(p1)
+            new_population.append(p2)
+            new_population.append(c1)
+            new_population.append(c1)
+
+        return new_population
+
 
 if __name__ == '__main__':
     cities, dim = readFromFile()
     start = time.time()
-    init_population = createPopulation(cities, dim)
+    init_population = createPopulation(cities)
 
-    fitness(init_population)
-    end = time.time()
-    # print(end-start)
-
-    # print(init_population)
-
-    
 
     population = init_population.copy()
     gen = 0
-
-    # while True:
-    gen += 1
-    order = fitness(population)
-    breed(order, population)
-
-    
-    # d = calcDistance(ci_sh[0], ci_sh[1]) #testing purpouses
-    tot_distance = 0
-    # print(ci_sh[0].id)
-    # print(ci_sh[-1].id)
-
-    # for i, c in enumerate(ci_sh):
-
-    #     # If we are at the final element, we want to add with calculate with first index
-    #     if i == dim-1:
-    #         print(c.id)
-
-    #for s in shuffled:
-    #    print(s.id)
-    #print(type(shuffled))
+    while True:
+        gen += 1
+        population = fitness(population)
+        population = breed2(population)
+        print("Generation:", gen, "Best:", best)
