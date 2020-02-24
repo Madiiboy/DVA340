@@ -1,4 +1,5 @@
 from random import shuffle
+import random
 import copy
 import math
 from queue import PriorityQueue
@@ -42,7 +43,6 @@ def randomPopulation(c, index):
     return (index, shuffled)
 
 def calcDistance(a, b):
-
     distance = float(math.sqrt((((b.x - a.x)**2)+(b.y - a.y)**2)))
     return distance
 
@@ -75,6 +75,7 @@ def breed(queue, population):
     # for p in population:
     #     print(p[0])
 
+    #This should run 15 times!!!
     for _ in range(1):
         p1, p2 = queue.get(), queue.get()
         p1_index, p2_index = p1[1], p2[1]
@@ -84,18 +85,28 @@ def breed(queue, population):
         parent_1 = population[p1_index][1]
         parent_2 = population[p2_index][1]
 
-        #Do the breeding here!!!
+        # for p in parent_1:
+        #     print(p.id)
 
-        print(parent_1)
-        
+        r1 = random.randint(0, 52/2)
+        r2 = random.randint(52/2, 52)
+        c1 = [None] * 52
+        c2 = [None] * 52
 
+        c1[r1:r2] = parent_1[r1:r2].copy()
+        c2[r1:r2] = parent_2[r1:r2].copy()
 
+        id1 = []
+        id2 = []
 
+        for i in range(len(c1)):
+            if not c1[i] is None:
+                id1.append(c1[i].id)
+            if not c2[i] is None:
+                id2.append(c2[i].id)
 
+        #Add values to c1 and c2 here without generating any duplicates!!
 
-        
-
-    
     #return the new population
     return
 
