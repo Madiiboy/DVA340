@@ -1,9 +1,6 @@
-from random import shuffle
 import random
 import copy
 import math
-from queue import PriorityQueue
-import time
 
 best = 0
 
@@ -30,23 +27,21 @@ def readFromFile():
 
     return cities, dimension
 
-
+#Create 50 individuals for the population
 def createPopulation(c):
-    return [randomPopulation(c) for i in range(60)]
+    return [randomPopulation(c) for i in range(50)]
 
-
+#Shuffle the cities in the individual
 def randomPopulation(c):
-    shuffled = c.copy()
-    shuffle(shuffled)
-    return (shuffled)
+    shuffle_copy = copy.deepcopy(c)
+    random.shuffle(shuffle_copy)
+    return shuffle_copy
 
-
+#Calculate distance between points
 def calcDistance(a, b):
-    distance = float(math.sqrt((((b.x - a.x) ** 2) + (b.y - a.y) ** 2)))
-    return distance
+    return float(math.sqrt((((b.x - a.x) ** 2) + (b.y - a.y) ** 2)))
 
-
-# Sort the best solutions. Return priority queue sorted on the shortest distance
+# Find the best and sort
 def fitness(population):
     global best
     population_fitness = []
@@ -59,137 +54,66 @@ def fitness(population):
                 break
             tot_distance += calcDistance(pop[i], pop[i + 1])
 
-    sorted_pop = []
-    sort = sorted(population_fitness)
-    best = sort[0][0]
-    for p in sort:
-        sorted_pop.append(p[1])
+    #Sort function
+    population_fitness.sort(key = lambda t: t[0])
+    # Set current best value to the global variable
+    best = population_fitness[0][0]
 
+    sorted_pop = []
+    for p in population_fitness:
+        sorted_pop.append(p[1])
     return sorted_pop
 
-def breed2(population):
+def crossover(best, rest):
+
+    r1 = random.randint(0, len(population[0])-2)
+    r2 = random.randint(r1, len(population[0])-1)
+
+    section1_c1 = best[r1:r2]
+
+    cities_in = []
+
+    for c in section1_c1:
+        cities_in.append(c.ide)
+
+    section2_c1 = []
+    for p in rest:
+        if p.ide not in cities_in:
+            section2_c1.append(p)
+
+    c1 = section2_c1[:r1] + section1_c1 + section2_c1[r1:]
+
+    r = random.randint(0,10)
+    if r < 2:
+        ri, ri2 = random.randint(0, len(population[0]) - 1), random.randint(0, len(population[0]) - 1)
+        c1[ri], c1[ri2] = c1[ri2], c1[ri]
+
+    return c1
+
+def evolution(population):
 
     new_population = []
-    # Byt ut 2 mot 30
 
-    for i in range(0, 30, 2):
-        p1 = population[i]
-        p2 = population[i + 1]
+    alpha = population[0:5]
+    #Randomize the best and the rest
+    random.shuffle(best)
+    random.shuffle(population)
+    for i, citizen in enumerate(population[::-1]):
+        new_population.append(crossover(best[i % len(best)-1], citizen))
 
-        r1 = random.randint(0, len(population[0]) / 2)
-        r2 = random.randint(len(population[0]) / 2, len(population[0]))
-
-        c1 = [None] * len(population[0])
-        c2 = [None] * len(population[0])
-
-        c1[r1:r2] = p1[r1:r2].copy()
-        c2[r1:r2] = p2[r1:r2].copy()
-
-        cities_in = []
-        cities_in_2 = []
-
-        for c in c1:
-            if not c is None:
-                cities_in.append(c.ide)
-        for c in c2:
-            if not c is None:
-                cities_in_2.append(c.ide)
-
-        for i, c in enumerate(c1):
-            if c is None:
-                for p in p2:
-                    if not p.ide in cities_in:
-                        cities_in.append(p.ide)
-                        c1[i] = p
-                        break
-
-        for i, c in enumerate(c2):
-            if c is None:
-                for p in p1:
-                    if not p.ide in cities_in_2:
-                        cities_in.append(p.ide)
-                        c2[i] = p
-                        break
-
-        rand = random.randint(0,100)
-        if rand > 50:
-            ri, ri2 = random.randint(0, len(population[0]) - 1), random.randint(0, len(population[0]) - 1)
-            c1[ri], c1[ri2] = c1[ri2], c1[ri]
-            c2[ri], c2[ri2] = c2[ri2], c2[ri]
-
-        new_population.append(p1)
-        new_population.append(p2)
-        new_population.append(c1)
-        new_population.append(c1)
+    #Some elitism here
+    new_population = new_population[0:40]
+    new_population += population[0:10]
 
     return new_population
 
-def breed(population):
-
-        new_population = []
-        #Byt ut 2 mot 30
-
-        for i in range(0, 30, 2):
-            p1 = population[i]
-            p2 = population[i+1]
-
-            r1 = random.randint(0, len(population[0])/2)
-            r2 = random.randint(len(population[0])/2, len(population[0]))
-
-            c1 = [None] * len(population[0])
-            c2 = [None] * len(population[0])
-
-            c1[r1:r2] = p1[r1:r2].copy()
-            c2[r1:r2] = p2[r1:r2].copy()
-
-            cities_in = []
-            cities_in_2 = []
-
-            for c in c1:
-                if not c is None:
-                    cities_in.append(c.ide)
-            for c in c2:
-                if not c is None:
-                    cities_in_2.append(c.ide)
-
-            for i,c in enumerate(c1):
-                if c is None:
-                    for p in p2:
-                        if not p.ide in cities_in:
-                            cities_in.append(p.ide)
-                            c1[i] = p
-                            break
-
-            for i,c in enumerate(c2):
-                if c is None:
-                    for p in p1:
-                        if not p.ide in cities_in_2:
-                            cities_in.append(p.ide)
-                            c2[i] = p
-                            break
-
-            ri, ri2 = random.randint(0, len(population[0])-1), random.randint(0, len(population[0])-1)
-            c1[ri], c1[ri2] = c1[ri2], c1[ri]
-            c2[ri], c2[ri2] = c2[ri2], c2[ri]
-
-            new_population.append(p1)
-            new_population.append(p2)
-            new_population.append(c1)
-            new_population.append(c1)
-
-        return new_population
-
-
 if __name__ == '__main__':
     cities, dim = readFromFile()
-    start = time.time()
-    init_population = createPopulation(cities)
+    population = createPopulation(cities)
 
-
-    population = init_population.copy()
     gen = 0
     while True:
         gen += 1
         population = fitness(population)
-        population = breed2(population)
+        population = evolution(population)
         print("Generation:", gen, "Best:", best)
