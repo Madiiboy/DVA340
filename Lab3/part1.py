@@ -2,7 +2,7 @@ import random
 import copy
 import math
 
-best = 0
+best = float('inf')
 
 class City:
     def __init__(self, _id, x, y):
@@ -27,9 +27,9 @@ def readFromFile():
 
     return cities, dimension
 
-#Create 50 individuals for the population
+#Create 100 individuals for the population
 def createPopulation(c):
-    return [randomPopulation(c) for i in range(50)]
+    return [randomPopulation(c) for i in range(100)]
 
 #Shuffle the cities in the individual
 def randomPopulation(c):
@@ -81,12 +81,12 @@ def crossover(best, rest):
         if p.ide not in cities_in:
             section2_c1.append(p)
 
-    c1 = section2_c1[:r1] + section1_c1 + section2_c1[r1:]
-
-    r = random.randint(0,10)
-    if r < 2:
-        ri, ri2 = random.randint(0, len(population[0]) - 1), random.randint(0, len(population[0]) - 1)
-        c1[ri], c1[ri2] = c1[ri2], c1[ri]
+    r = random.randint(0,100)
+    if r < 25:
+        section1_c1.reverse()
+        c1 = section2_c1[:r1] + section1_c1 + section2_c1[r1:]
+    else:
+        c1 = section2_c1[:r1] + section1_c1 + section2_c1[r1:]
 
     return c1
 
@@ -94,15 +94,14 @@ def evolution(population):
 
     new_population = []
 
-    alpha = population[0:5]
+    best = population[0:5]
     #Randomize the best and the rest
     random.shuffle(best)
-    random.shuffle(population)
     for i, citizen in enumerate(population[::-1]):
         new_population.append(crossover(best[i % len(best)-1], citizen))
 
     #Some elitism here
-    new_population = new_population[0:40]
+    new_population = new_population[0:90]
     new_population += population[0:10]
 
     return new_population
@@ -113,7 +112,8 @@ if __name__ == '__main__':
 
     gen = 0
     while True:
+        if best < 9000: break
         gen += 1
         population = fitness(population)
         population = evolution(population)
-        print("Generation:", gen, "Best:", best)
+        print("Generation:", gen, "Best:", round(best, 2))
