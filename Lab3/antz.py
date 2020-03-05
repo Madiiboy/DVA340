@@ -2,6 +2,7 @@ import math
 import random
 import numpy as np
 from matplotlib import pyplot as plt
+import copy
 
 alpha = 1.2
 beta = 2
@@ -9,6 +10,7 @@ global_best = float('inf')
 global_best_ant = None
 best = float('inf')
 best_ant = None
+ph = None
 
 class City:
     def __init__(self, id, x, y):
@@ -71,6 +73,7 @@ def initCitiesNormalized(cities):
 
 # Returns a matrix of starting values of pheromone
 def initPheromone():
+    global ph
     matrix = np.zeros(shape=(52,52))
     #Fill the new matrix with the start value
     for i in range(52):
@@ -82,8 +85,8 @@ def initPheromone():
                 matrix[i][j] = 0
     #plt.imshow(matrix, interpolation='nearest')
     #plt.show()
-
-    return matrix
+    ph = matrix
+    #return matrix
 
 #def pheromoneEvaporation():
 def initCities(cities):
@@ -102,24 +105,25 @@ def initCities(cities):
 
     return matrix
 #Here we randomly select path taking probabilities into consideration
-def selectPath(ant, cx, ph):
+def selectPath(ant, cx_n):
 
     # print(ant.current)
     # print(ant.visited)
     for _ in range(52):
 
         possible = []
-        probabilities = []
+
         sum = 0
-        for loc in range(cx.shape[0]):
+        for loc in range(cx_n.shape[0]):
             if loc not in ant.visited:
                 possible.append(loc)
-                sum += math.pow(ph[ant.current][loc], alpha) * math.pow(cx[ant.current][loc] ,beta)
+                sum += math.pow(ph[ant.current][loc], alpha) * math.pow(cx_n[ant.current][loc] ,beta)
                 # ants[i].visited.append()
                 #flytta varje myra genom hela skiten och addera pheromone
 
+        probabilities = []
         for loc in possible:
-            part = math.pow(ph[ant.current][loc], alpha) * math.pow(cx[ant.current][loc] ,beta)
+            part = math.pow(ph[ant.current][loc], alpha) * math.pow(cx_n[ant.current][loc] ,beta)
             d = part / sum 
             probabilities.append(d)
 
@@ -137,22 +141,42 @@ def selectPath(ant, cx, ph):
         ant.visited.append(possible[selected])
 
     print(ant.visited)
-
     # print(sum)
 
-def eachAnt(ants, cx, cx_n, ph):
+def addPheromone(ants):
+    #The ants are sorted
+    global ph
+    paths = []
+    for a in ants:
+        paths.append(a[1])
+
+    for i,p in enumerate(paths):
+        x = 1 / ants[i][0]
+        if i == 51:
+            ph[p[i]][p[0]] += x
+        ph[p[i]][p[i+1]] += x
+
+    #[from][to]
+
+def eachAnt(ants, cx, cx_n):
     global best
     global global_best
     # selectPath(ants, cx, ph)
     paths = []
     for ant in ants:
-        paths.append(selectPath(ant, cx_n, ph))
+        paths.append(selectPath(ant, cx_n))
+
+    z = []
+    for p in paths:
+        z.append(sorted(p))
+
 
     total = []
     for p in paths:
         total.append(calculateBest(p, cx))
-    
+
     x = sorted(total)
+    addPheromone(x)
     # print(x[0][0], x[0][1])
 
     if x[0][0] < global_best:
@@ -161,9 +185,6 @@ def eachAnt(ants, cx, cx_n, ph):
     
     best = x[0][0]
     best_ant = x[0][1]
-        
-    # print(total)
-    # best_val_ = sorted(total)[0]
 
 def calculateBest(path, cx):
 
@@ -171,12 +192,15 @@ def calculateBest(path, cx):
     for i,p in enumerate(path):
         if i == len(path)-1:
             tot += cx[51][0]
-
         tot += cx[path[i-1]][path[i]]
-        # [från][till]
 
     return (tot, path)
 
+def evaporatePheromone():
+    global ph
+    for i in range(52):
+        for j in range(52):
+            ph[i][j] *= 0.5
 
 if __name__ == "__main__":
 
@@ -184,12 +208,15 @@ if __name__ == "__main__":
 
     cx_n = initCitiesNormalized(cities)
     cx = initCities(cities)
-    ph = initPheromone()
+    initPheromone()
 
     gen = 0
     while best > 9000:
         gen += 1
         ants = initAnts(50)
-        eachAnt(ants ,cx, cx_n, ph)
-        # print('Gen:',gen, 'Best:', "{0:.2f}".format(best))
+        eachAnt(ants ,cx, cx_n)
+        print('Gen:',gen, 'Best:', "{0:.2f}".format(best))
+        evaporatePheromone()
+        #plt.imshow(ph, interpolation='nearest')
+        #plt.show()
         # updatePheromone(ph)
