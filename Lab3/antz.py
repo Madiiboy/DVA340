@@ -4,13 +4,14 @@ import numpy as np
 from matplotlib import pyplot as plt
 import copy
 
-alpha = 1.2
-beta = 2
+alpha = 30
+beta = 20
 global_best = float('inf')
 global_best_ant = None
 best = float('inf')
 best_ant = None
 ph = None
+
 
 class City:
     def __init__(self, id, x, y):
@@ -86,7 +87,6 @@ def initPheromone():
     #plt.imshow(matrix, interpolation='nearest')
     #plt.show()
     ph = matrix
-    #return matrix
 
 #def pheromoneEvaporation():
 def initCities(cities):
@@ -107,8 +107,6 @@ def initCities(cities):
 #Here we randomly select path taking probabilities into consideration
 def selectPath(ant, cx_n):
 
-    # print(ant.current)
-    # print(ant.visited)
     for _ in range(52):
 
         possible = []
@@ -118,8 +116,6 @@ def selectPath(ant, cx_n):
             if loc not in ant.visited:
                 possible.append(loc)
                 sum += math.pow(ph[ant.current][loc], alpha) * math.pow(cx_n[ant.current][loc] ,beta)
-                # ants[i].visited.append()
-                #flytta varje myra genom hela skiten och addera pheromone
 
         probabilities = []
         for loc in possible:
@@ -127,6 +123,7 @@ def selectPath(ant, cx_n):
             d = part / sum 
             probabilities.append(d)
 
+        # Roulette selection
         selected = 0
         r = random.random()
         for i, p in enumerate(probabilities):
@@ -136,12 +133,8 @@ def selectPath(ant, cx_n):
                 break
         if not len(possible):
             return ant.visited
-            print("howdy")
         ant.current = possible[selected]
         ant.visited.append(possible[selected])
-
-    print(ant.visited)
-    # print(sum)
 
 def addPheromone(ants):
     #The ants are sorted
@@ -154,9 +147,9 @@ def addPheromone(ants):
         x = 1 / ants[i][0]
         if i == 51:
             ph[p[i]][p[0]] += x
-        ph[p[i]][p[i+1]] += x
+        else:
+            ph[p[i]][p[i+1]] += x
 
-    #[from][to]
 
 def eachAnt(ants, cx, cx_n):
     global best
@@ -166,9 +159,9 @@ def eachAnt(ants, cx, cx_n):
     for ant in ants:
         paths.append(selectPath(ant, cx_n))
 
-    z = []
-    for p in paths:
-        z.append(sorted(p))
+    # z = []
+    # for p in paths:
+    #     z.append(sorted(p))
 
 
     total = []
@@ -177,6 +170,7 @@ def eachAnt(ants, cx, cx_n):
 
     x = sorted(total)
     addPheromone(x)
+    evaporatePheromone()
     # print(x[0][0], x[0][1])
 
     if x[0][0] < global_best:
@@ -200,7 +194,7 @@ def evaporatePheromone():
     global ph
     for i in range(52):
         for j in range(52):
-            ph[i][j] *= 0.5
+            ph[i][j] *= 1-0.7
 
 if __name__ == "__main__":
 
@@ -215,8 +209,8 @@ if __name__ == "__main__":
         gen += 1
         ants = initAnts(50)
         eachAnt(ants ,cx, cx_n)
-        print('Gen:',gen, 'Best:', "{0:.2f}".format(best))
-        evaporatePheromone()
+        print('Gen:',gen, 'Best:', "{0:.2f}".format(best), 'Global:', "{0:.2f}".format(global_best))
         #plt.imshow(ph, interpolation='nearest')
         #plt.show()
         # updatePheromone(ph)
+    print('Gen:', gen, 'Best:', "{0:.2f}".format(best), 'Global:', "{0:.2f}".format(global_best))
