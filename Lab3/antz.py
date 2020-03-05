@@ -4,14 +4,14 @@ import numpy as np
 from matplotlib import pyplot as plt
 import copy
 
-alpha = 30
-beta = 20
+alpha = 1.5
+beta = 0.95
 global_best = float('inf')
 global_best_ant = None
 best = float('inf')
 best_ant = None
-ph = None
-
+pheromone_matrix = None
+city_matrix = None
 
 class City:
     def __init__(self, id, x, y):
@@ -55,26 +55,23 @@ def initAnts(amount):
 
     return ants
 
-# Returns a matrix with distances between all the different cities
-def initCitiesNormalized(cities):
-
+def initCities(cities):
+    global city_matrix
     matrix = np.zeros(shape=(52,52))
     for i in range(len(cities)):
         for j in range(len(cities)):
             if i != j:
-                matrix[i][j] = 1 / float(calcDistance(cities[i], cities[j]))
+                matrix[i][j] = float(calcDistance(cities[i], cities[j]))
             #Distance to same city should be 0
             else:
                 matrix[i][j] = 0
 
+    city_matrix = matrix
     # plt.imshow(matrix, interpolation='nearest')
     # plt.show()
 
-    return matrix
-
-# Returns a matrix of starting values of pheromone
 def initPheromone():
-    global ph
+    global pheromone_matrix
     matrix = np.zeros(shape=(52,52))
     #Fill the new matrix with the start value
     for i in range(52):
@@ -86,41 +83,42 @@ def initPheromone():
                 matrix[i][j] = 0
     #plt.imshow(matrix, interpolation='nearest')
     #plt.show()
-    ph = matrix
+    pheromone_matrix = matrix
 
-#def pheromoneEvaporation():
-def initCities(cities):
+def buildSolution(ants):
+    global best
 
-    matrix = np.zeros(shape=(52,52))
-    for i in range(len(cities)):
-        for j in range(len(cities)):
-            if i != j:
-                matrix[i][j] = float(calcDistance(cities[i], cities[j]))
-            #Distance to same city should be 0
-            else:
-                matrix[i][j] = 0
+    paths = []
+    #For each ant we want to walk around the path
+    for ant in ants:
+        paths.append(selectPath(ant))
 
-    # plt.imshow(matrix, interpolation='nearest')
-    # plt.show()
+    calculated_dist = []
+    for path in paths:
+        calculated_dist.append(calDistance(path))
 
-    return matrix
-#Here we randomly select path taking probabilities into consideration
-def selectPath(ant, cx_n):
+    #Evaporate all edges
+    evaporate()
+    sort = sorted(calculated_dist)
+    best = sort[0][0]
+    addPheromone(sort)
 
-    for _ in range(52):
 
+def selectPath(ant):
+    #For every city
+    for i in range(52):
         possible = []
-
         sum = 0
-        for loc in range(cx_n.shape[0]):
-            if loc not in ant.visited:
-                possible.append(loc)
-                sum += math.pow(ph[ant.current][loc], alpha) * math.pow(cx_n[ant.current][loc] ,beta)
+        for i in range(52):
+            if i not in ant.visited:
+                #Add it to the path
+                possible.append(i)
+                sum += math.pow(pheromone_matrix[ant.current][i], alpha) * math.pow(1 / city_matrix[ant.current][i], beta)
 
         probabilities = []
-        for loc in possible:
-            part = math.pow(ph[ant.current][loc], alpha) * math.pow(cx_n[ant.current][loc] ,beta)
-            d = part / sum 
+        for i in possible:
+            part = math.pow(pheromone_matrix[ant.current][i], alpha) * math.pow( 1 / city_matrix[ant.current][i], beta)
+            d = part / sum
             probabilities.append(d)
 
         # Roulette selection
@@ -136,81 +134,56 @@ def selectPath(ant, cx_n):
         ant.current = possible[selected]
         ant.visited.append(possible[selected])
 
-def addPheromone(ants):
-    #The ants are sorted
-    global ph
-    paths = []
-    for a in ants:
-        paths.append(a[1])
+def calDistance(path):
 
-    for i,p in enumerate(paths):
-        x = 1 / ants[i][0]
-        if i == 51:
-            ph[p[i]][p[0]] += x
+    #Distance matrix yes pls
+    val = 0
+    for i in range(len(path)):
+        #final index
+        if i is len(path) - 1:
+            val += city_matrix[path[i]][0]
         else:
-            ph[p[i]][p[i+1]] += x
+            val += city_matrix[path[i]][path[i+1]]
 
+    return (val, path)
 
-def eachAnt(ants, cx, cx_n):
-    global best
-    global global_best
-    # selectPath(ants, cx, ph)
-    paths = []
-    for ant in ants:
-        paths.append(selectPath(ant, cx_n))
-
-    # z = []
-    # for p in paths:
-    #     z.append(sorted(p))
-
-
-    total = []
-    for p in paths:
-        total.append(calculateBest(p, cx))
-
-    x = sorted(total)
-    addPheromone(x)
-    evaporatePheromone()
-    # print(x[0][0], x[0][1])
-
-    if x[0][0] < global_best:
-        global_best = x[0][0]
-        global_best_ant = x[0][1]
-    
-    best = x[0][0]
-    best_ant = x[0][1]
-
-def calculateBest(path, cx):
-
-    tot = 0
-    for i,p in enumerate(path):
-        if i == len(path)-1:
-            tot += cx[51][0]
-        tot += cx[path[i-1]][path[i]]
-
-    return (tot, path)
-
-def evaporatePheromone():
-    global ph
+def evaporate():
+    global pheromone_matrix
+    evap_rate = 0.3
     for i in range(52):
         for j in range(52):
-            ph[i][j] *= 1-0.7
+            pheromone_matrix[i][j] = (1-evap_rate) * pheromone_matrix[i][j]
+
+def addPheromone(sorted_ants):
+    global pheromone_matrix
+    vals = []
+    paths = []
+    for val in sorted_ants:
+        vals.append(val[0])
+        paths.append(val[1])
+
+    for i,ant in enumerate(paths):
+        x = vals[i]
+        for i in range(1, 52):
+            pheromone_matrix[ant[i-1]][ant[i]] += x
+            pheromone_matrix[ant[i]][ant[i-1]] += x
+
 
 if __name__ == "__main__":
 
     cities = readFromFile()
-
-    cx_n = initCitiesNormalized(cities)
-    cx = initCities(cities)
+    initCities(cities)
     initPheromone()
 
-    gen = 0
+    gen = 1
     while best > 9000:
-        gen += 1
         ants = initAnts(50)
-        eachAnt(ants ,cx, cx_n)
-        print('Gen:',gen, 'Best:', "{0:.2f}".format(best), 'Global:', "{0:.2f}".format(global_best))
-        #plt.imshow(ph, interpolation='nearest')
-        #plt.show()
+        buildSolution(ants)
+        print('Gen:',gen, 'Best:', "{0:.2f}".format(best))
+        gen += 1
+    #plt.imshow(city_matrix, interpolation='nearest')
+    #plt.show()
         # updatePheromone(ph)
-    print('Gen:', gen, 'Best:', "{0:.2f}".format(best), 'Global:', "{0:.2f}".format(global_best))
+    #print('Gen:', gen, 'Best:', "{0:.2f}".format(best), 'Global:', "{0:.2f}".format(global_best))
+
+
