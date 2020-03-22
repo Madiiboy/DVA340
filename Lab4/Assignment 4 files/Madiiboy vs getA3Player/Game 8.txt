@@ -1,0 +1,26 @@
+001  Madiiboy moved 1 in 0.026997089385986328 sec.
+
+0     4 4 4 4 4 4
+
+      0 5 5 5 5 4    0
+
+001  getA3Player moved 6 in 0.017980575561523438 sec.
+
+1     0 4 4 4 4 4
+
+      1 6 6 5 5 4    0
+
+001  Madiiboy moved 1 in 0.04099130630493164 sec.
+
+1     0 4 4 4 4 4
+
+      0 7 6 5 5 4    0
+
+001  getA3Player moved 1 in 0.006994485855102539 sec.
+
+1     0 5 5 5 5 0
+
+      0 7 6 5 5 4    0
+
+404  Madiiboy performed an incorrect move (1)
+

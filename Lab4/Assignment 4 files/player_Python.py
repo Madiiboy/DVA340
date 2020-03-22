@@ -5,6 +5,15 @@ import numpy as np
 import time
 from multiprocessing.pool import ThreadPool
 import os
+import random
+
+class Mancala: 
+    
+    def getValidMoves(self, b, player):
+        if player is '1':
+            return [i for i in range(6) if b[i] != 0]
+        else:
+            return [i for i in range(7, 14) if b[i] != 0]
 
 
 def receive(socket):
@@ -20,7 +29,6 @@ def receive(socket):
 
 def send(socket, msg):
     socket.sendall(msg.encode())
-
 
 # VARIABLES
 playerName = 'Madiiboy'
@@ -70,6 +78,13 @@ while not gameEnd:
             i += 1
             j += 2
 
+
+
+        valid_moves = getValidMoves(board)
+        print(valid_moves)
+        # move = minimax()
+        move = '1'
+
         # TODO: Minimax funktion för att avgöra det bästa möjliga draget. Måste fixa någon dank datastruktur för att hålla koll
         #på alla värden. Träd med massa noder exempelvis
 
@@ -78,6 +93,8 @@ while not gameEnd:
         # example: move = '1';  Possible moves from '1' to '6' if the game's rules allows those moves.
         # TODO: Change this
         ################
-        move = '0'
+        
+
+        # move = str(r)
         ################
         send(s, move)
