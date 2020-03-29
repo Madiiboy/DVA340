@@ -1,49 +1,148 @@
 import numpy as np
 import csv
 
-LEARNING_RATE = 0.01
-NODES = 256
-
-#sigmoid
-def activation(x, derivative=False):
-    if derivative:
-        return x * (1.0 - x)
-    return 1/(1+np.exp(-x))
-
-def softmax():
-    pass
+LEARNING_RATE = 0.1
+NODES = 16
 
 class NeuralNetwork:
-    def __init__(self, _input = 784, neurons=256, output=10):
+    def __init__(self, network_shapes, learning_rate):
         
-        #Weights from input layer to the hidden layer
-        self.weights1   = np.random.rand(_input, neurons)          #Initiate 784x256 vector filled with random videos between 0-1
+        # Create shapes of the weights
+        w_shapes = [(x, y) for x, y in zip(network_shapes[1:], network_shapes[:-1])]
 
-        #Weights from hidden to output layer
-        self.weights2   = np.random.rand(neurons, output)          #Initiate 256x10 vector filled with random videos between 0-1
+        # Save all the different layers shapes
+        self.shapes = network_shapes
 
+        # Initialize all the weights with a random value between -1 and 1
+        self.weights = [np.random.standard_normal(s) for s in w_shapes]
 
+        # Vector for all the biases
+        self.biases = [np.zeros((i, 1)) for i in network_shapes[1:]]
 
+        self.learning_rate = learning_rate
 
-    def propagate_forward(self, x):
-        # Jag vill att x ska ha shape (784,1)
+    #sigmoid
+    def sigmoid(self, x, derivative=False):
+        if derivative:
+            return x * (1.0 - x)
+        return 1/(1+np.exp(-x))
 
-        self.layer1 = activation(np.dot(x, self.weights1),False)
-        self.output = activation(np.dot(self.layer1, self.weights2),False)
-        #print(np.shape(x))
-        #print(np.shape(self.weights1))
-        #print(self.weights1)
-        #print(self.layer1)
-        #print(self.output)
+    def softmax(self, x, derivative=False):
+        if derivative:
+            return 1
+        return np.divide(np.exp(x), (sum([np.exp(i) for i in x])))
 
-    def backprop(self, x, target):
-        # application of the chain rule to find derivative of the loss function with respect to weights2 and weights1
-        d_weights2 = np.dot(self.layer1.T, (2*(target - self.output) * activation(self.output)))
-        d_weights1 = np.dot(self.x.T,  (np.dot(2*(target - self.output) * activation(self.output), self.weights2.T) * activation(self.layer1)))
+    def propagate_forward(self, data):
+        #print(data.shape)
+        #print(self.weights[-1].shape)
+        outputs = []
+        # For each weight and bias run acivation function
+        for weight, bias in zip(self.weights[:-1], self.biases[:-1]):
+            data = self.sigmoid(np.matmul(weight, data) + bias)
+            outputs.append(data)
 
-        # update the weights with the derivative (slope) of the loss function
-        self.weights1 += d_weights1
-        self.weights2 += d_weights2
+        # Softmax activation function for the output layer
+        data = self.softmax(np.matmul(self.weights[-1], data) + self.biases[-1])        
+        outputs.append(data)
+
+        return outputs
+
+    def backpropagation(self, data, outputs, target):
+    
+        #Create a target vector filled with 0, except the labeled index    
+        target_vector = np.array([1.0 if i == target else 0.0 for i in range(self.shapes[-1])]).reshape(self.shapes[-1], 1)
+
+        errors = []
+
+        #Initiate our errors list with an empty list for each output
+        for i in range(len(outputs)):
+            errors.append([])
+
+        # Propagate backwards
+        for i in reversed(range(len(outputs))):
+
+            o = outputs[i]
+
+            # If we are at the output layer
+            if i == len(outputs) - 1:
+
+                error = np.subtract(target_vector, o)
+                # Calculate errors for nodes
+                errors[i] = np.multiply(self.softmax(o, True), error)
+            else:
+                index = i + 1
+
+                # calculate errors
+                error = np.matmul(self.weights[index].T, errors[index])
+                delta = np.multiply(error, self.sigmoid(o,True))
+                errors[i] = delta
+
+        for i in reversed(range(len(outputs))):
+
+            # The input is the previous layers output or the input data at the input layer
+            data_in = data.reshape((self.shapes[0], 1)) if i == 0 else outputs[i - 1]
+
+            # Calculate delta for all weights
+            delta_w = np.multiply(np.multiply(errors[i], data_in.T), self.learning_rate)
+            # Calculate delta for all biases
+            delta_b = np.multiply(np.multiply(errors[i], 1), self.learning_rate)
+
+            # Update with the new values
+            self.weights[i] = np.add(self.weights[i], delta_w)
+            self.biases[i] = np.add(self.biases[i], delta_b)
+
+    def training(self, training_data):
+        print("Training initiated")
+        accurate_guesses = 0
+        data = []
+        labels = []
+        for d in training_data:
+            data.append(d[1:])
+            labels.append(d[0])
+
+        # print(len(training_data))
+        for i, t in enumerate(data):
+            arr = np.array(t)
+            outputs = self.propagate_forward(arr.reshape(self.shapes[0],1))
+            #Get the index of accurate guess
+            guess = np.argmax(outputs[-1])
+            
+            if guess == labels[i]:
+                accurate_guesses += 1
+
+            # Backpropagate through the network
+            self.backpropagation(arr, outputs, labels[i])
+
+        # Return the accuracy of the network
+        print(accurate_guesses)
+        return accurate_guesses / len(training_data)
+
+    def validate(self, validation_data):
+        print("Validation initiated")
+        accurate_guesses = 0
+        data = []
+        labels = []
+        for d in validation_data:
+            data.append(d[1:])
+            labels.append(d[0])
+
+        # print(len(validation_data))
+        for i, t in enumerate(data):
+            arr = np.array(t)
+            outputs = self.propagate_forward(arr.reshape(self.shapes[0],1))
+            #Get the index of accurate guess
+            guess = np.argmax(outputs[-1])
+            
+            if guess == labels[i]:
+                accurate_guesses += 1
+
+        # Return the accuracy of the network
+        # print(accurate_guesses)
+        print(accurate_guesses, "out of", len(validation_data))
+        return accurate_guesses / len(validation_data)
+
+    def test(self, test_data):
+        pass
 
 def loadAllData():
 
@@ -53,7 +152,8 @@ def loadAllData():
         csv_reader = csv.reader(csv_file)
         next(csv_reader)
         for row in csv_reader:
-            data.append([int(i) for i in row])
+            # Normalize and append data
+            data.append([float(i)/255 for i in row])
     
     return data
 
@@ -71,22 +171,15 @@ if __name__ == "__main__":
     # 20 % of all_data for testing
     test = all_data[int(len(all_data)*0.8):len(all_data)]
 
+    network_shapes = [784, NODES, 10]
+
     # Initiate neural network
-    nn = NeuralNetwork()
+    nn = NeuralNetwork(network_shapes, LEARNING_RATE)
 
-    for t in training:
-        #Create a target vector and set the label index to 1
-        target = np.zeros(10)
-        target[t[0]] = 1
-        row = [1, 0, None]
-        nn.propagate_forward(t[1:])
-        #nn.backprop(training[1:], target)
-        print("En iteration")
-    # for i in range(int(len(all_data)*0.7)):
-    #     nn.feedforward(training[i][1:])
-    #     nn.backprop()
+    print(nn.training(training))
+    print(nn.validate(validation))
 
 
-    print(nn.output)
+    
 
 
