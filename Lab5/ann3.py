@@ -2,7 +2,7 @@ import numpy as np
 import csv
 
 LEARNING_RATE = 0.1
-NODES = 16
+NODES = 256
 
 class NeuralNetwork:
     def __init__(self, network_shapes, learning_rate):
@@ -21,13 +21,14 @@ class NeuralNetwork:
 
         self.learning_rate = learning_rate
 
-    #sigmoid
-    def sigmoid(self, x, derivative=False):
+    @staticmethod
+    def sigmoid(x, derivative=False):
         if derivative:
             return x * (1.0 - x)
         return 1/(1+np.exp(-x))
 
-    def softmax(self, x, derivative=False):
+    @staticmethod
+    def softmax(x, derivative=False):
         if derivative:
             return 1
         return np.divide(np.exp(x), (sum([np.exp(i) for i in x])))
@@ -100,15 +101,16 @@ class NeuralNetwork:
             data.append(d[1:])
             labels.append(d[0])
 
-        # print(len(training_data))
-        for i, t in enumerate(data):
+        #np.divide(data,255) normalizes the data
+        for (i, (t, label)) in enumerate(zip(np.divide(data,255), labels)):
             arr = np.array(t)
             outputs = self.propagate_forward(arr.reshape(self.shapes[0],1))
-            #Get the index of accurate guess
+            #print(outputs[-1])
+            #Get the index of best guess
             guess = np.argmax(outputs[-1])
             
-            if guess == labels[i]:
-                accurate_guesses += 1
+            if guess == label:
+                accurate_guesses = accurate_guesses + 1
 
             # Backpropagate through the network
             self.backpropagation(arr, outputs, labels[i])
@@ -127,14 +129,14 @@ class NeuralNetwork:
             labels.append(d[0])
 
         # print(len(validation_data))
-        for i, t in enumerate(data):
+        for (i, (t, label)) in enumerate(zip(np.divide(data,255), labels)):
             arr = np.array(t)
             outputs = self.propagate_forward(arr.reshape(self.shapes[0],1))
             #Get the index of accurate guess
             guess = np.argmax(outputs[-1])
             
-            if guess == labels[i]:
-                accurate_guesses += 1
+            if guess == label:
+                accurate_guesses = accurate_guesses + 1
 
         # Return the accuracy of the network
         # print(accurate_guesses)
@@ -153,7 +155,7 @@ def loadAllData():
         next(csv_reader)
         for row in csv_reader:
             # Normalize and append data
-            data.append([float(i)/255 for i in row])
+            data.append([float(i) for i in row])
     
     return data
 
