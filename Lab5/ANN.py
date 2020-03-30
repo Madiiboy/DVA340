@@ -1,8 +1,9 @@
 import numpy as np
 import csv
+import matplotlib.pyplot as plt
 
 LEARNING_RATE = 0.1
-NODES = 256
+NODES = 128
 
 class NeuralNetwork:
     def __init__(self, network_shapes, learning_rate):
@@ -144,7 +145,44 @@ class NeuralNetwork:
         return accurate_guesses / len(validation_data)
 
     def test(self, test_data):
-        pass
+        print("Testing initiated")
+        accurate_guesses = 0
+        data = []
+        labels = []
+        for d in test_data:
+            data.append(d[1:])
+            labels.append(d[0])
+
+
+        result_deviation = np.zeros(10)
+        amount_of_each = np.zeros(10)
+        # print(len(validation_data))
+        for (i, (t, label)) in enumerate(zip(np.divide(data,255), labels)):
+            # print(label)
+            arr = np.array(t)
+            outputs = self.propagate_forward(arr.reshape(self.shapes[0],1))
+            #Get the index of accurate guess
+            guess = np.argmax(outputs[-1])
+            amount_of_each[int(label)] += 1
+
+            if guess == label:
+                result_deviation[guess] += 1
+                accurate_guesses = accurate_guesses + 1
+
+        percentage = np.divide(result_deviation, amount_of_each)
+        print(percentage)
+        #objects = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+        #y_pos = np.arange(len(objects))
+        #plt.bar(y_pos, percentage, align='center', alpha=0.5)
+        #plt.xticks(y_pos, objects)
+        #plt.ylabel('Correct guesses')
+        #plt.xlabel('Digit')
+        #plt.show()
+
+        # Return the accuracy of the network
+        # print(accurate_guesses)
+        print(accurate_guesses, "out of", len(test_data))
+        return accurate_guesses / len(test_data)
 
 def loadAllData():
 
@@ -177,9 +215,30 @@ if __name__ == "__main__":
 
     # Initiate neural network
     nn = NeuralNetwork(network_shapes, LEARNING_RATE)
+    training_sets = []
+    index = 1
+    for i in range(0, len(training), int(len(training)/10)):
+        training_sets.append(training[i:int(len(training)/10)*index])
+        index += 1
 
-    print(nn.training(training))
-    print(nn.validate(validation))
+    training_results = []
+    validation_results = []
+    for sets in training_sets:
+        training_results.append(nn.training(sets))
+        validation_results.append(nn.validate(validation))
+    print(training_results)
+    print(validation_results)
+
+    plt.plot(range(len(validation_results)), validation_results)
+    plt.xlabel('Validation')
+    plt.ylabel('Accuracy')
+    plt.show()
+
+    #print(nn.training(training))
+    #Divide the training set by 10
+
+    #print(nn.validate(validation))
+    print(nn.test(test))
 
 
     
