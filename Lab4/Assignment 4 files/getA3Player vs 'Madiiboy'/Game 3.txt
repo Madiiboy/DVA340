@@ -1,0 +1,20 @@
+001  'Madiiboy' moved 1 in 0.17438101768493652 sec.
+
+0     4 5 5 5 5 0
+
+      4 4 4 4 4 4    0
+
+001  getA3Player moved 3 in 0.03396487236022949 sec.
+
+0     4 5 5 5 5 0
+
+      4 4 0 5 5 5    1
+
+001  getA3Player moved 4 in 0.014984607696533203 sec.
+
+0     4 5 5 5 6 1
+
+      4 4 0 0 6 6    2
+
+404  'Madiiboy' did not move in 0.20379090309143066 sec.
+

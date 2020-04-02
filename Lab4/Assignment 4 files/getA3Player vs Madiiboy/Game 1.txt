@@ -1,20 +1,4 @@
-001  Madiiboy moved 1 in 0.020978927612304688 sec.
+404  Madiiboy did not move in 0.20079588890075684 sec.
 
-0     4 5 5 5 5 0
-
-      4 4 4 4 4 4    0
-
-001  getA3Player moved 3 in 0.024974584579467773 sec.
-
-0     4 5 5 5 5 0
-
-      4 4 0 5 5 5    1
-
-001  getA3Player moved 1 in 0.01798105239868164 sec.
-
-0     4 5 5 5 5 0
-
-      0 5 1 6 6 5    1
-
-404  Madiiboy performed an incorrect move (1)
+404  Madiiboy performed an incorrect move ()
 

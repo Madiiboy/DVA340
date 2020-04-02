@@ -1,0 +1,20 @@
+001  getA4Player moved 3 in 0.022976398468017578 sec.
+
+0     4 4 4 4 4 4
+
+      4 4 0 5 5 5    1
+
+001  getA4Player moved 4 in 0.036962032318115234 sec.
+
+0     4 4 4 4 5 5
+
+      4 4 0 0 6 6    2
+
+001  'Madiiboy' moved 2 in 0.033965110778808594 sec.
+
+1     5 5 5 5 0 5
+
+      4 4 0 0 6 6    2
+
+404  'Madiiboy' performed an incorrect move (2)
+

@@ -1,0 +1,116 @@
+001  getA3Player moved 2 in 0.023975133895874023 sec.
+
+0     4 4 4 4 4 4
+
+      4 0 5 5 5 5    0
+
+001  'Madiiboy' moved 1 in 0.07392525672912598 sec.
+
+0     4 5 5 5 5 0
+
+      4 0 5 5 5 5    0
+
+001  getA3Player moved 6 in 0.01798105239868164 sec.
+
+0     4 5 6 6 6 1
+
+      4 0 5 5 5 0    1
+
+001  'Madiiboy' moved 1 in 0.04561614990234375 sec.
+
+0     4 5 6 6 7 0
+
+      4 0 5 5 5 0    1
+
+001  getA3Player moved 3 in 0.017981529235839844 sec.
+
+0     4 5 6 6 7 1
+
+      4 0 0 6 6 1    2
+
+001  'Madiiboy' moved 1 in 0.05294537544250488 sec.
+
+0     4 5 6 6 8 0
+
+      4 0 0 6 6 1    2
+
+001  getA3Player moved 5 in 0.01898026466369629 sec.
+
+0     4 5 7 7 9 1
+
+      4 0 0 6 0 2    3
+
+001  'Madiiboy' moved 1 in 0.037961721420288086 sec.
+
+0     4 5 7 7 10 0
+
+      4 0 0 6 0 2    3
+
+001  getA3Player moved 6 in 0.011986732482910156 sec.
+
+0     4 5 7 7 10 1
+
+      4 0 0 6 0 0    4
+
+001  'Madiiboy' moved 1 in 0.03796052932739258 sec.
+
+0     4 5 7 7 11 0
+
+      4 0 0 6 0 0    4
+
+001  getA3Player moved 4 in 0.01198720932006836 sec.
+
+0     4 5 7 8 12 1
+
+      4 0 0 0 1 1    5
+
+001  'Madiiboy' moved 1 in 0.0319669246673584 sec.
+
+0     4 5 7 8 13 0
+
+      4 0 0 0 1 1    5
+
+001  getA3Player moved 6 in 0.017981290817260742 sec.
+
+0     4 5 7 8 13 0
+
+      4 0 0 0 1 0    6
+
+001  getA3Player moved 1 in 0.029968738555908203 sec.
+
+0     4 5 7 8 13 0
+
+      0 1 1 1 2 0    6
+
+001  'Madiiboy' moved 2 in 0.16682887077331543 sec.
+
+5     5 6 8 9 0 1
+
+      1 2 2 2 0 1    6
+
+001  getA3Player moved 3 in 0.025973796844482422 sec.
+
+5     5 6 8 9 0 1
+
+      1 2 0 3 1 1    6
+
+001  'Madiiboy' moved 1 in 0.1598355770111084 sec.
+
+7     5 6 8 9 0 0
+
+      1 2 0 3 0 1    6
+
+001  getA3Player moved 6 in 0.011986970901489258 sec.
+
+7     5 6 8 9 0 0
+
+      1 2 0 3 0 0    7
+
+001  getA3Player moved 2 in 0.017981290817260742 sec.
+
+7     5 6 8 9 0 0
+
+      1 0 1 4 0 0    7
+
+404  'Madiiboy' performed an incorrect move (1)
+
