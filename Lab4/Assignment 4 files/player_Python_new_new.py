@@ -69,8 +69,12 @@ class GameState():
             self.board[bucket] = 0
             availble_stones = stones
             index = bucket
+            last_index = 0
             while availble_stones > 0:
                 #Skip if opponents pit
+                if availble_stones == 1:
+                    last_index = index
+
                 if index == 14:
                     index = 0
 
@@ -81,13 +85,20 @@ class GameState():
                     self.board[index+1] += 1
                     index += 1
                     availble_stones -= 1
-            self.player = 1
+            if last_index == 6:
+                self.player = 1
+            else:
+                self.player = 2
+            return
+
         elif self.player == 1:
             self.board[bucket] = 0
             availble_stones = stones
             index = bucket
+            last_index = 0
             while availble_stones > 0:
-                
+                if availble_stones == 1:
+                    last_index = index
                 #Skip if opponents pit
                 if index == 6:
                     index += 1
@@ -100,7 +111,11 @@ class GameState():
                     self.board[index+1] += 1
                     index += 1
                     availble_stones -= 1
-            self.player = 2
+            if last_index == 13:
+                self.player = 1
+            else:
+                self.player = 2
+            return
         
 
 # Called from 'main' to start the game
