@@ -11,6 +11,8 @@ import copy
 
 # TODO:
     # Se över hur spelaren ändras, så borde koden funka sen
+    # Kanske döpa om till next_player eller något för att tydligare se vem som spelar nästa runda
+    # Fixa move som är helt jävla broken
 
 class GameState():
     def __init__(self, player_turn, board):
@@ -22,18 +24,11 @@ class GameState():
     def findValidMoves(self):
         # print(self.player)
         #Hmm, ska denna vara jag?
-        if self.player == 2:
+        if self.player == 1:
             return [i for i in range(6) if self.board[i] != 0]
         #get other players possible moves
         else:
-            return [i for i in range(7,14) if self.board[i] != 0]
-
-    #Get the total score of player 1
-    def getScore(self):
-        score = 0
-        for i in range(7):
-            score += self.board[i]
-        return score
+            return [i for i in range(7,13) if self.board[i] != 0]
 
     # Check if the game is over
     def isOver(self):
@@ -47,7 +42,7 @@ class GameState():
 
         # check if player2 still has stones
         if not over: 
-            for i in range(7, 14):
+            for i in range(7, 13):
                 if self.board[i] != 0:
                     return False
 
@@ -55,67 +50,111 @@ class GameState():
         else:
             return True
     
-    # Simulates the move
+    # Returns opposite buckets
+    def getOpposite(self, x):
+        if x == 0 or x == 12:
+            return (12,0)
+        elif x == 1 or x == 11:
+            return (11,1)
+        elif x == 2 or x == 10:
+            return (10,2)
+        elif x == 3 or x == 9:
+            return (9,3)
+        elif x == 4 or x == 8:
+            return (8,4)
+        elif x == 5 or x == 7:
+            return (7,5)
+
     def makeMove(self, bucket):
+        '''
+            Takes bucket as input
+            Simulate move for that bucket
+        '''
+        # print(self.board)
 
-        # TODO: Check if player will get a bonus move
+        # Range 6
+        if self.player == 1:
 
-        # get the amount of stones that is in chosen bucket
-        stones = self.board[bucket]
-
-        #If the player is me, I want to be able to put stone in index 6
-        if self.player == 2:
-            #take all stones from the current bucket
+            #Empty the bucket
+            stones = self.board[bucket]
             self.board[bucket] = 0
-            availble_stones = stones
-            index = bucket
-            last_index = 0
-            while availble_stones > 0:
-                #Skip if opponents pit
-                if availble_stones == 1:
-                    last_index = index
+            change_player = True
+            #Index where we start laying down stones
+            index = bucket + 1
 
+            while stones > 0:
+
+                # This probably never triggers, but I put it here for safety
                 if index == 14:
                     index = 0
 
-                #Skip the enemy pit
-                if index == 13:
-                    index += 1
-                else:
-                    self.board[index+1] += 1
-                    index += 1
-                    availble_stones -= 1
-            if last_index == 6:
-                self.player = 1
-            else:
-                self.player = 2
-            return
+                # check if bonus turn or empty pit
+                if stones == 1:
+                    #Bonus turn
+                    if index == 6:
+                        self.player = 1
+                        self.board[6] += 1
+                        change_player = False
+                        break
+                    # Take opponents opposing bucket
+                    if index in range(6) and self.board[index] == 0:
+                        self.board[6] += 1
+                        opposing = self.getOpposite(index)
+                        self.board[6] += self.board[opposing[0]]
+                        self.board[opposing[0]] = 0
+                        break
 
-        elif self.player == 1:
-            self.board[bucket] = 0
-            availble_stones = stones
-            index = bucket
-            last_index = 0
-            while availble_stones > 0:
-                if availble_stones == 1:
-                    last_index = index
-                #Skip if opponents pit
-                if index == 6:
-                    index += 1
 
+                # We want to skip the opponents basket
                 if index == 13:
                     index = 0
-                    self.board[index] += 1
-                    availble_stones -= 1
                 else:
-                    self.board[index+1] += 1
+                    self.board[index] += 1
                     index += 1
-                    availble_stones -= 1
-            if last_index == 13:
-                self.player = 1
-            else:
+                    stones -= 1
+            if change_player:
                 self.player = 2
-            return
+        else:
+
+            #Empty the bucket
+            stones = self.board[bucket]
+            self.board[bucket] = 0
+            change_player = True
+            #Index where we start laying down stones
+            index = bucket + 1
+
+            while stones > 0:
+                # check if bonus turn or empty pit
+                if index == 14:
+                    index = 0
+
+                if stones == 1:
+                    #Bonus turn
+                    if index == 13:
+                        self.board[13] += 1
+                        self.player = 1
+                        change_player = False
+                        break
+                    # Take opponents opposing bucket
+                    if index in range(7,13) and self.board[index] == 0:
+                        self.board[13] += 1
+                        opposing = self.getOpposite(index)
+                        self.board[13] += self.board[opposing[1]]
+                        self.board[opposing[1]] = 0
+                        break
+
+                
+                # We want to skip the opponents basket
+                if index == 6:
+                    index = 7
+                else:
+                    self.board[index] += 1
+                    index += 1
+                    stones -= 1
+            if change_player:
+                self.player = 2
+
+        # print(self.board)
         
 
 # Called from 'main' to start the game
@@ -123,6 +162,7 @@ def getBestMove(state):
 
     # print(state.player)
     valid_moves = state.findValidMoves()
+    # print(valid_moves)
     # print(possible_moves)
     move_evals = []
     max_val = -math.inf
@@ -131,29 +171,28 @@ def getBestMove(state):
         new_state = copy.deepcopy(state)
         new_state.makeMove(move)
         # print(new_state.board)
-        val = minimax(state, 2, state.player)
+        val = minimax(new_state, 2, -math.inf, math.inf)
 
         move_evals.append((move, val))
         if val > max_val:
             max_val = val
             best_move = move
 
-    # print(best_move)
-    # print(state.board)
+    
     best_move = (best_move+1) % 7
     # print(best_move)
-    # print(state.board)
     return best_move
 
 
-def minimax(state, depth, player):
-    print(player)
+
+def minimax(state, depth, alpha, beta):
+    # print(player)
 
     if state.isOver() or depth == 0:
-        return calculateValue(state.board, state.player)
+        return heuristic(state)
         
     #maximizing player
-    if state.player == 2:
+    if state.player == 1:
         max_eval = -math.inf
         validMoves = state.findValidMoves()
         
@@ -162,8 +201,12 @@ def minimax(state, depth, player):
             new_board = copy.deepcopy(state)
             new_board.makeMove(v)
 
-            evaluate = minimax(new_board, depth-1, state.player)
+            evaluate = minimax(new_board, depth-1, alpha, beta)
             maxEval = max(max_eval, evaluate)
+            alpha = max(alpha, evaluate)
+
+            if beta  <= alpha:
+                break
         return maxEval
     else:
         min_eval = math.inf
@@ -174,27 +217,28 @@ def minimax(state, depth, player):
             new_board = copy.deepcopy(state)
             new_board.makeMove(v)
 
-            evaluate = minimax(new_board, depth-1, state.player)
+            evaluate = minimax(new_board, depth-1, alpha, beta)
             minEval = min(min_eval, evaluate)
-        return minEval
+            beta = min(beta, evaluate)
 
+            if beta <= alpha:
+                break
+            
+        return minEval
 # Calculate the current score of the game, to be used as heuristic value
-def calculateValue(board, player):
+def heuristic(state):
     
     player1stones = 0
     for i in range(6):
-        player1stones += board[i]
-    player1stones += board[6] * 1.5
+        player1stones += state.board[i]
+    player1stones += state.board[6] * 1.5
 
     player2stones = 0
-    for i in range(7,14):
-        player2stones += board[i]
-    player2stones += board[13] * 1.5
+    for i in range(7,13):
+        player2stones += state.board[i]
+    player2stones += state.board[13] * 1.5
 
-    if player == 2:
-        return player2stones - player1stones
-    else:
-        return player1stones - player2stones
+    return player2stones-player1stones
 
 def receive(socket):
     msg = ''.encode()  # type: str
@@ -256,17 +300,12 @@ while not gameEnd:
             board[i] = int(data[j]) * 10 + int(data[j + 1])
             i += 1
             j += 2
+
+        # board = [0, 0, 0, 0, 10, 0, 0, 4, 4, 4, 4, 4, 4, 0]
         # playerTurn = int(data[0])
-        # board = [4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0]
-        # state = GameState(playerTurn, board, 0)
-        # move = state.findBestMove()
         state = GameState(playerTurn, board)
         move = getBestMove(state)
         # print(move)
-        #I believe that it works, but i do not check which is the best move, only which has the best heuristic value
-        # move = minimax(b, 2, b.player)
-        # TODO: Minimax funktion för att avgöra det bästa möjliga draget. Måste fixa någon dank datastruktur för att hålla koll
-        #på alla värden. Träd med massa noder exempelvis
 
         # Using your intelligent bot, assign a move to "move"
         #

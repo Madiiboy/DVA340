@@ -93,7 +93,7 @@ class Board:
 
         # check if player2 still has stones
         if not over: 
-            for i in range(7, 14):
+            for i in range(7, 13):
                 if self.board[i] != 0:
                     return False
 

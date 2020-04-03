@@ -1,20 +1,202 @@
-001  getA4Player moved 3 in 0.023488521575927734 sec.
+001  getA4Player moved 3 in 0.019978761672973633 sec.
 
 0     4 4 4 4 4 4
 
       4 4 0 5 5 5    1
 
-001  getA4Player moved 4 in 0.013977289199829102 sec.
+001  getA4Player moved 4 in 0.036962032318115234 sec.
 
 0     4 4 4 4 5 5
 
       4 4 0 0 6 6    2
 
-001  'Madiiboy' moved 2 in 0.021976947784423828 sec.
+001  'Madiiboy' moved 2 in 0.027971744537353516 sec.
 
 1     5 5 5 5 0 5
 
       4 4 0 0 6 6    2
 
-404  'Madiiboy' performed an incorrect move (2)
+001  'Madiiboy' moved 6 in 0.0169832706451416 sec.
+
+2     0 5 5 5 0 5
+
+      5 5 1 1 6 6    2
+
+001  getA4Player moved 2 in 0.019978761672973633 sec.
+
+2     0 5 5 5 0 5
+
+      5 0 2 2 7 7    3
+
+001  getA4Player moved 1 in 0.0319671630859375 sec.
+
+2     0 5 5 5 0 5
+
+      0 1 3 3 8 8    3
+
+001  'Madiiboy' moved 3 in 0.03496408462524414 sec.
+
+3     1 6 6 0 0 5
+
+      1 1 3 3 8 8    3
+
+001  getA4Player moved 4 in 0.013985872268676758 sec.
+
+3     1 6 6 0 0 5
+
+      1 1 3 0 9 9    4
+
+001  getA4Player moved 5 in 0.013987541198730469 sec.
+
+3     2 7 7 1 1 6
+
+      2 1 3 0 0 10    5
+
+001  'Madiiboy' moved 1 in 0.02696967124938965 sec.
+
+4     3 8 8 2 2 0
+
+      2 1 3 0 0 10    5
+
+001  'Madiiboy' moved 3 in 0.033965349197387695 sec.
+
+4     3 9 9 0 2 0
+
+      2 1 3 0 0 10    5
+
+001  getA4Player moved 6 in 0.01898050308227539 sec.
+
+4     4 10 10 1 3 1
+
+      3 2 4 0 0 0    6
+
+001  'Madiiboy' moved 6 in 0.03296542167663574 sec.
+
+5     0 10 10 1 3 1
+
+      4 3 5 0 0 0    6
+
+001  getA4Player moved 1 in 0.023975610733032227 sec.
+
+5     0 10 10 1 0 1
+
+      0 4 6 1 0 0    10
+
+001  'Madiiboy' moved 1 in 0.020978212356567383 sec.
+
+5     0 10 10 1 1 0
+
+      0 4 6 1 0 0    10
+
+001  getA4Player moved 4 in 0.023975372314453125 sec.
+
+5     0 10 10 1 0 0
+
+      0 4 6 0 0 0    12
+
+001  'Madiiboy' moved 3 in 0.018980741500854492 sec.
+
+5     0 10 11 0 0 0
+
+      0 4 6 0 0 0    12
+
+001  getA4Player moved 3 in 0.012984514236450195 sec.
+
+5     0 10 11 0 1 1
+
+      0 4 0 1 1 1    13
+
+001  'Madiiboy' moved 2 in 0.029968738555908203 sec.
+
+7     0 10 11 0 0 1
+
+      0 4 0 0 1 1    13
+
+001  getA4Player moved 6 in 0.023975372314453125 sec.
+
+7     0 10 11 0 0 1
+
+      0 4 0 0 1 0    14
+
+001  getA4Player moved 2 in 0.017981529235839844 sec.
+
+7     0 10 11 0 0 0
+
+      0 0 1 1 2 0    16
+
+001  'Madiiboy' moved 4 in 0.02397465705871582 sec.
+
+12     1 11 0 0 0 1
+
+       1 1 2 2 0 1    16
+
+001  getA4Player moved 6 in 0.011988162994384766 sec.
+
+12     1 11 0 0 0 1
+
+       1 1 2 2 0 0    17
+
+001  getA4Player moved 4 in 0.011987447738647461 sec.
+
+12     1 11 0 0 0 0
+
+       1 1 2 0 1 0    19
+
+001  'Madiiboy' moved 6 in 0.017977237701416016 sec.
+
+13     0 11 0 0 0 0
+
+       1 1 2 0 1 0    19
+
+001  'Madiiboy' moved 5 in 0.029969215393066406 sec.
+
+16     1 0 0 0 1 1
+
+       2 2 3 0 2 1    19
+
+001  getA4Player moved 6 in 0.030968666076660156 sec.
+
+16     1 0 0 0 1 1
+
+       2 2 3 0 2 0    20
+
+001  getA4Player moved 5 in 0.030968189239501953 sec.
+
+16     1 0 0 0 1 1
+
+       2 2 3 0 0 1    21
+
+001  getA4Player moved 6 in 0.017983198165893555 sec.
+
+16     1 0 0 0 1 1
+
+       2 2 3 0 0 0    22
+
+001  getA4Player moved 3 in 0.03895878791809082 sec.
+
+16     1 0 0 0 1 0
+
+       2 2 0 1 1 0    24
+
+001  'Madiiboy' moved 2 in 0.017981529235839844 sec.
+
+18     1 0 0 0 0 0
+
+       2 2 0 0 1 0    24
+
+001  getA4Player moved 1 in 0.017981290817260742 sec.
+
+18     1 0 0 0 0 0
+
+       0 3 1 0 1 0    24
+
+001  'Madiiboy' moved 6 in 0.011987686157226562 sec.
+
+19     0 0 0 0 0 0
+
+       0 3 1 0 1 0    24
+
+000  The game ended correctly. getA4Player: 29 'Madiiboy': 19
+
+000  getA4Player win!
 
