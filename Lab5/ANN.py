@@ -22,14 +22,14 @@ class NeuralNetwork:
 
         self.learning_rate = learning_rate
 
-    @staticmethod
-    def sigmoid(x, derivative=False):
+    
+    def sigmoid(self, x, derivative=False):
         if derivative:
             return x * (1.0 - x)
         return 1/(1+np.exp(-x))
 
-    @staticmethod
-    def softmax(x, derivative=False):
+    
+    def softmax(self, x, derivative=False):
         if derivative:
             return 1
         return np.divide(np.exp(x), (sum([np.exp(i) for i in x])))

@@ -1,0 +1,42 @@
+000  Game 0
+
+002  'Madiiboy' 26 - 22 getA3Player
+
+000  Game 1
+
+002  getA3Player 17 - 31 'Madiiboy'
+
+000  Game 2
+
+002  'Madiiboy' 16 - 32 getA3Player
+
+000  Game 3
+
+002  getA3Player 20 - 28 'Madiiboy'
+
+000  Game 4
+
+002  'Madiiboy' 33 - 15 getA3Player
+
+000  Game 5
+
+002  getA3Player 15 - 33 'Madiiboy'
+
+000  Game 6
+
+002  'Madiiboy' 32 - 16 getA3Player
+
+000  Game 7
+
+002  getA3Player 23 - 25 'Madiiboy'
+
+000  Game 8
+
+002  'Madiiboy' 29 - 19 getA3Player
+
+000  Game 9
+
+002  getA3Player 36 - 12 'Madiiboy'
+
+'Madiiboy' won 8 games. getA3Player won 2 games. There were 0 draws.
+

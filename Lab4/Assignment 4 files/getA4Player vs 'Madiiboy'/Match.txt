@@ -1,42 +1,42 @@
 000  Game 0
 
-002  getA4Player 29 - 19 'Madiiboy'
+002  getA4Player 23 - 25 'Madiiboy'
 
 000  Game 1
 
-002  'Madiiboy' 23 - 25 getA4Player
+002  'Madiiboy' 41 - 7 getA4Player
 
 000  Game 2
 
-002  getA4Player 29 - 19 'Madiiboy'
+002  getA4Player 23 - 25 'Madiiboy'
 
 000  Game 3
 
-002  'Madiiboy' 23 - 25 getA4Player
+002  'Madiiboy' 41 - 7 getA4Player
 
 000  Game 4
 
-002  getA4Player 29 - 19 'Madiiboy'
+002  getA4Player 23 - 25 'Madiiboy'
 
 000  Game 5
 
-002  'Madiiboy' 23 - 25 getA4Player
+002  'Madiiboy' 41 - 7 getA4Player
 
 000  Game 6
 
-002  getA4Player 29 - 19 'Madiiboy'
+002  getA4Player 23 - 25 'Madiiboy'
 
 000  Game 7
 
-002  'Madiiboy' 23 - 25 getA4Player
+002  'Madiiboy' 41 - 7 getA4Player
 
 000  Game 8
 
-002  getA4Player 29 - 19 'Madiiboy'
+002  getA4Player 23 - 25 'Madiiboy'
 
 000  Game 9
 
-002  'Madiiboy' 23 - 25 getA4Player
+002  'Madiiboy' 41 - 7 getA4Player
 
-getA4Player won 10 games. 'Madiiboy' won 0 games. There were 0 draws.
+getA4Player won 0 games. 'Madiiboy' won 10 games. There were 0 draws.
 

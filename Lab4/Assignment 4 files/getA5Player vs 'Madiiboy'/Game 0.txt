@@ -1,0 +1,178 @@
+001  getA5Player moved 3 in 0.025974273681640625 sec.
+
+0     4 4 4 4 4 4
+
+      4 4 0 5 5 5    1
+
+001  getA5Player moved 4 in 0.013985633850097656 sec.
+
+0     4 4 4 4 5 5
+
+      4 4 0 0 6 6    2
+
+001  'Madiiboy' moved 6 in 0.032965898513793945 sec.
+
+1     0 4 4 4 5 5
+
+      5 5 1 0 6 6    2
+
+001  getA5Player moved 2 in 0.02797079086303711 sec.
+
+1     0 4 4 4 5 5
+
+      5 0 2 1 7 7    3
+
+001  getA5Player moved 5 in 0.033965110778808594 sec.
+
+1     0 5 5 5 6 6
+
+      5 0 2 1 0 8    4
+
+001  'Madiiboy' moved 1 in 0.017981767654418945 sec.
+
+2     1 6 6 6 7 0
+
+      5 0 2 1 0 8    4
+
+001  'Madiiboy' moved 6 in 0.013005495071411133 sec.
+
+3     0 6 6 6 7 0
+
+      5 0 2 1 0 8    4
+
+001  'Madiiboy' moved 2 in 0.01601243019104004 sec.
+
+4     1 7 7 7 0 0
+
+      6 1 2 1 0 8    4
+
+001  getA5Player moved 1 in 0.013013124465942383 sec.
+
+4     1 7 7 7 0 0
+
+      0 2 3 2 1 9    5
+
+001  getA5Player moved 6 in 0.018996715545654297 sec.
+
+4     2 8 8 8 1 1
+
+      1 3 3 2 1 0    6
+
+001  'Madiiboy' moved 6 in 0.017998933792114258 sec.
+
+5     0 8 8 8 1 1
+
+      2 3 3 2 1 0    6
+
+001  getA5Player moved 3 in 0.019010066986083984 sec.
+
+5     0 8 8 8 1 0
+
+      2 3 0 3 2 0    8
+
+001  'Madiiboy' moved 2 in 0.02748560905456543 sec.
+
+5     0 8 8 9 0 0
+
+      2 3 0 3 2 0    8
+
+001  getA5Player moved 4 in 0.019002914428710938 sec.
+
+5     0 8 8 9 0 0
+
+      2 3 0 0 3 1    9
+
+001  getA5Player moved 1 in 0.030997037887573242 sec.
+
+5     0 8 0 9 0 0
+
+      0 4 0 0 3 1    18
+
+001  'Madiiboy' moved 3 in 0.017000436782836914 sec.
+
+6     1 9 1 0 0 0
+
+      1 5 1 1 4 1    18
+
+001  getA5Player moved 6 in 0.018999576568603516 sec.
+
+6     1 9 1 0 0 0
+
+      1 5 1 1 4 0    19
+
+001  getA5Player moved 2 in 0.028990983963012695 sec.
+
+6     1 9 1 0 0 0
+
+      1 0 2 2 5 1    20
+
+001  getA5Player moved 6 in 0.023009777069091797 sec.
+
+6     1 9 1 0 0 0
+
+      1 0 2 2 5 0    21
+
+001  getA5Player moved 1 in 0.01298666000366211 sec.
+
+6     1 0 1 0 0 0
+
+      0 0 2 2 5 0    31
+
+001  'Madiiboy' moved 4 in 0.018006086349487305 sec.
+
+6     1 1 0 0 0 0
+
+      0 0 2 2 5 0    31
+
+001  getA5Player moved 3 in 0.02500629425048828 sec.
+
+6     1 1 0 0 0 0
+
+      0 0 0 3 6 0    31
+
+001  'Madiiboy' moved 6 in 0.03700613975524902 sec.
+
+7     0 1 0 0 0 0
+
+      0 0 0 3 6 0    31
+
+001  'Madiiboy' moved 5 in 0.016006946563720703 sec.
+
+7     1 0 0 0 0 0
+
+      0 0 0 3 6 0    31
+
+001  getA5Player moved 4 in 0.03799772262573242 sec.
+
+7     1 0 0 0 0 0
+
+      0 0 0 0 7 1    32
+
+001  getA5Player moved 6 in 0.028009653091430664 sec.
+
+7     1 0 0 0 0 0
+
+      0 0 0 0 7 0    33
+
+001  getA5Player moved 5 in 0.03398537635803223 sec.
+
+7     1 1 1 1 1 1
+
+      0 0 0 0 0 1    34
+
+001  'Madiiboy' moved 1 in 0.019979238510131836 sec.
+
+7     1 1 1 1 2 0
+
+      0 0 0 0 0 1    34
+
+001  getA5Player moved 6 in 0.011002302169799805 sec.
+
+7     1 1 1 1 2 0
+
+      0 0 0 0 0 0    35
+
+000  The game ended correctly. getA5Player: 35 'Madiiboy': 13
+
+000  getA5Player win!
+

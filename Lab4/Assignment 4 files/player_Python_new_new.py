@@ -19,6 +19,7 @@ class GameState():
         # print(board)
         self.player = player_turn
         self.board = board
+        self.bonus_move = False
         
     # Get all the possible moves
     def findValidMoves(self):
@@ -71,7 +72,7 @@ class GameState():
             Simulate move for that bucket
         '''
         # print(self.board)
-
+        self.bonus_move = False
         # Range 6
         if self.player == 1:
 
@@ -83,7 +84,6 @@ class GameState():
             index = bucket + 1
 
             while stones > 0:
-
                 # This probably never triggers, but I put it here for safety
                 if index == 14:
                     index = 0
@@ -134,6 +134,7 @@ class GameState():
                         self.board[13] += 1
                         self.player = 1
                         change_player = False
+                        self.bonus_move = True
                         break
                     # Take opponents opposing bucket
                     if index in range(7,13) and self.board[index] == 0:
@@ -143,7 +144,6 @@ class GameState():
                         self.board[opposing[1]] = 0
                         break
 
-                
                 # We want to skip the opponents basket
                 if index == 6:
                     index = 7
@@ -154,16 +154,31 @@ class GameState():
             if change_player:
                 self.player = 2
 
-        # print(self.board)
-        
+    def heuristic(self, state):
+        score = 0
+        '''
+           Calculate the total amount of stones on player 2 side of the playing field.
+           Multiply stones in the nest with 1.5, since that is valuable to us 
+        '''
+        player2stones = 0
+        for i in range(7,13):
+            player2stones += state.board[i]
+        player2stones += state.board[13] * 1.5
+        '''
+            Check if we are on a bonus move, if so add a value to score
+        '''
+        if self.bonus_move:
+            score += 1
+        '''
+            Return the score
+        '''
+        return player2stones+score      
 
 # Called from 'main' to start the game
 def getBestMove(state):
 
-    # print(state.player)
     valid_moves = state.findValidMoves()
-    # print(valid_moves)
-    # print(possible_moves)
+
     move_evals = []
     max_val = -math.inf
     best_move = None
@@ -189,7 +204,7 @@ def minimax(state, depth, alpha, beta):
     # print(player)
 
     if state.isOver() or depth == 0:
-        return heuristic(state)
+        return state.heuristic(state)
         
     #maximizing player
     if state.player == 1:
@@ -225,20 +240,7 @@ def minimax(state, depth, alpha, beta):
                 break
             
         return minEval
-# Calculate the current score of the game, to be used as heuristic value
-def heuristic(state):
-    
-    player1stones = 0
-    for i in range(6):
-        player1stones += state.board[i]
-    player1stones += state.board[6] * 1.5
 
-    player2stones = 0
-    for i in range(7,13):
-        player2stones += state.board[i]
-    player2stones += state.board[13] * 1.5
-
-    return player2stones-player1stones
 
 def receive(socket):
     msg = ''.encode()  # type: str

@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 import copy
 
 alpha = 1.5
-beta = 0.95
+beta = 1
 global_best = float('inf')
 global_best_ant = None
 best = float('inf')
@@ -163,7 +163,7 @@ def addPheromone(sorted_ants):
         paths.append(val[1])
 
     for i,ant in enumerate(paths):
-        x = vals[i]
+        x = 1 / vals[i]
         for i in range(1, 52):
             pheromone_matrix[ant[i-1]][ant[i]] += x
             pheromone_matrix[ant[i]][ant[i-1]] += x

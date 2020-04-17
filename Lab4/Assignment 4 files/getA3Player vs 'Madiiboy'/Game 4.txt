@@ -1,244 +1,178 @@
-001  getA3Player moved 5 in 0.011986970901489258 sec.
+001  getA3Player moved 2 in 0.03096795082092285 sec.
 
-0     4 4 4 4 5 5
+0     4 4 4 4 4 4
 
-      4 4 4 4 0 5    1
+      4 0 5 5 5 5    0
 
-001  'Madiiboy' moved 2 in 0.028970003128051758 sec.
+001  'Madiiboy' moved 3 in 0.03296542167663574 sec.
 
-1     5 5 5 5 0 5
+1     5 5 5 0 4 4
 
-      4 4 4 4 0 5    1
+      4 0 5 5 5 5    0
 
-001  'Madiiboy' moved 6 in 0.0319669246673584 sec.
+001  'Madiiboy' moved 6 in 0.01498556137084961 sec.
 
-2     0 5 5 5 0 5
+2     0 5 5 0 4 4
 
-      5 5 5 5 0 5    1
+      5 1 6 6 5 5    0
 
-001  getA3Player moved 6 in 0.01997995376586914 sec.
+001  getA3Player moved 4 in 0.01598358154296875 sec.
 
-2     0 5 6 6 1 6
+2     0 5 5 1 5 5
 
-      5 5 5 5 0 0    2
+      5 1 6 0 6 6    1
 
-001  'Madiiboy' moved 1 in 0.021976947784423828 sec.
+001  'Madiiboy' moved 1 in 0.022975683212280273 sec.
 
-3     1 6 7 7 2 0
+8     0 6 6 2 6 0
 
-      5 5 5 5 0 0    2
+      0 1 6 0 6 6    1
 
-001  'Madiiboy' moved 2 in 0.014985084533691406 sec.
+001  getA3Player moved 6 in 0.01798224449157715 sec.
 
-3     1 6 8 8 0 0
+8     0 7 7 3 7 1
 
-      5 5 5 5 0 0    2
-
-001  getA3Player moved 1 in 0.023974895477294922 sec.
-
-3     1 6 8 8 0 0
-
-      0 6 6 6 1 1    2
-
-001  'Madiiboy' moved 6 in 0.029969215393066406 sec.
-
-4     0 6 8 8 0 0
-
-      0 6 6 6 1 1    2
-
-001  'Madiiboy' moved 3 in 0.029968976974487305 sec.
-
-5     1 7 9 0 0 0
-
-      1 7 7 7 1 1    2
-
-001  getA3Player moved 6 in 0.013988494873046875 sec.
-
-5     1 7 9 0 0 0
-
-      1 7 7 7 1 0    3
-
-001  getA3Player moved 3 in 0.04096055030822754 sec.
-
-5     1 7 9 1 1 1
-
-      1 7 0 8 2 1    4
-
-001  'Madiiboy' moved 1 in 0.022972583770751953 sec.
-
-5     1 7 9 1 2 0
-
-      1 7 0 8 2 1    4
-
-001  getA3Player moved 1 in 0.011987924575805664 sec.
-
-5     1 7 9 1 2 0
-
-      0 8 0 8 2 1    4
-
-001  'Madiiboy' moved 2 in 0.021976947784423828 sec.
-
-5     1 7 10 2 0 0
-
-      0 8 0 8 2 1    4
-
-001  getA3Player moved 5 in 0.01198720932006836 sec.
-
-5     1 7 10 2 0 0
-
-      0 8 0 8 0 2    5
-
-001  getA3Player moved 2 in 0.018982410430908203 sec.
-
-5     1 7 10 3 1 1
-
-      0 0 1 9 1 3    6
-
-001  'Madiiboy' moved 6 in 0.015603780746459961 sec.
-
-6     0 7 10 3 1 1
-
-      0 0 1 9 1 3    6
-
-001  'Madiiboy' moved 1 in 0.02097797393798828 sec.
-
-6     0 7 10 3 2 0
-
-      0 0 1 9 1 3    6
-
-001  getA3Player moved 4 in 0.023975372314453125 sec.
-
-6     1 8 11 4 3 1
-
-      0 0 1 0 2 4    7
-
-001  'Madiiboy' moved 3 in 0.0319674015045166 sec.
-
-7     2 9 12 0 3 1
-
-      0 0 1 0 2 4    7
-
-001  'Madiiboy' moved 1 in 0.029991626739501953 sec.
-
-7     2 9 12 0 4 0
-
-      0 0 1 0 2 4    7
-
-001  getA3Player moved 3 in 0.023952245712280273 sec.
-
-7     2 9 12 0 4 0
-
-      0 0 0 1 2 4    7
-
-001  'Madiiboy' moved 6 in 0.023975610733032227 sec.
-
-8     0 9 12 0 4 0
-
-      1 0 0 1 2 4    7
-
-001  getA3Player moved 6 in 0.018981218338012695 sec.
-
-8     0 9 12 1 5 1
-
-      1 0 0 1 2 0    8
+      0 1 6 0 6 0    2
 
 001  'Madiiboy' moved 2 in 0.0299685001373291 sec.
 
-9     1 10 13 2 0 1
+9     1 8 8 4 0 1
 
-      1 0 0 1 2 0    8
+      1 2 6 0 6 0    2
 
-001  'Madiiboy' moved 1 in 0.020978927612304688 sec.
+001  getA3Player moved 3 in 0.019979476928710938 sec.
 
-12     1 10 13 2 0 0
+9     1 8 8 4 1 2
 
-       1 0 0 1 0 0    8
+      1 2 0 1 7 1    3
 
-001  getA3Player moved 4 in 0.011988162994384766 sec.
+001  'Madiiboy' moved 3 in 0.03998303413391113 sec.
 
-12     1 10 13 2 0 0
+10     2 9 9 0 1 2
 
-       1 0 0 0 1 0    8
+       1 2 0 1 7 1    3
 
-001  'Madiiboy' moved 3 in 0.019979000091552734 sec.
+001  'Madiiboy' moved 1 in 0.022016048431396484 sec.
 
-12     1 11 14 0 0 0
+12     2 9 9 0 2 0
 
-       1 0 0 0 1 0    8
+       1 2 0 0 7 1    3
 
-001  getA3Player moved 1 in 0.018980741500854492 sec.
+001  getA3Player moved 1 in 0.01850605010986328 sec.
 
-12     1 0 14 0 0 0
+12     2 9 9 0 2 0
 
-       0 0 0 0 1 0    20
+       0 3 0 0 7 1    3
 
-001  'Madiiboy' moved 6 in 0.019979476928710938 sec.
+001  'Madiiboy' moved 6 in 0.026008129119873047 sec.
 
-13     0 0 14 0 0 0
+13     0 9 9 0 2 0
 
-       0 0 0 0 1 0    20
+       1 3 0 0 7 1    3
 
-001  'Madiiboy' moved 4 in 0.023975372314453125 sec.
+001  getA3Player moved 2 in 0.029972553253173828 sec.
 
-14     1 2 1 1 1 1
+13     0 9 9 0 2 0
 
-       1 1 1 1 2 1    20
+       1 0 1 1 8 1    3
 
-001  getA3Player moved 5 in 0.01198720932006836 sec.
+001  'Madiiboy' moved 2 in 0.03496384620666504 sec.
 
-14     1 2 1 1 1 1
+13     0 9 10 1 0 0
 
-       1 1 1 1 0 2    21
+       1 0 1 1 8 1    3
 
-001  getA3Player moved 1 in 0.017981529235839844 sec.
+001  getA3Player moved 3 in 0.011071205139160156 sec.
 
-14     1 2 1 1 1 1
+13     0 9 10 1 0 0
 
-       0 2 1 1 0 2    21
+       1 0 0 2 8 1    3
 
-001  'Madiiboy' moved 6 in 0.027970075607299805 sec.
+001  'Madiiboy' moved 4 in 0.023991823196411133 sec.
 
-15     0 2 1 1 1 1
+17     1 10 0 1 0 0
 
-       0 2 1 1 0 2    21
+       2 1 1 3 9 0    3
 
-001  'Madiiboy' moved 5 in 0.031966209411621094 sec.
+001  getA3Player moved 1 in 0.011987686157226562 sec.
 
-16     1 0 1 1 1 1
+17     1 10 0 1 0 0
 
-       0 2 1 1 0 2    21
+       0 2 2 3 9 0    3
 
-001  'Madiiboy' moved 6 in 0.01798105239868164 sec.
+001  'Madiiboy' moved 5 in 0.029969453811645508 sec.
 
-17     0 0 1 1 1 1
+29     2 0 0 1 0 1
 
-       0 2 1 1 0 2    21
+       1 3 3 4 0 1    3
 
-001  'Madiiboy' moved 4 in 0.02497410774230957 sec.
+001  getA3Player moved 1 in 0.02597332000732422 sec.
 
-20     0 0 0 1 1 1
+29     2 0 0 1 0 1
 
-       0 0 1 1 0 2    21
+       0 4 3 4 0 1    3
 
-001  getA3Player moved 6 in 0.011987686157226562 sec.
+001  'Madiiboy' moved 1 in 0.03096771240234375 sec.
 
-20     0 0 0 1 1 2
+29     2 0 0 1 1 0
 
-       0 0 1 1 0 0    22
+       0 4 3 4 0 1    3
 
-001  'Madiiboy' moved 3 in 0.017982006072998047 sec.
+001  getA3Player moved 6 in 0.018074750900268555 sec.
 
-22     0 0 0 0 1 2
+29     2 0 0 1 1 0
 
-       0 0 0 1 0 0    22
+       0 4 3 4 0 0    4
 
-001  getA3Player moved 4 in 0.023976564407348633 sec.
+001  getA3Player moved 3 in 0.025965213775634766 sec.
 
-22     0 0 0 0 0 2
+29     2 0 0 1 1 0
 
-       0 0 0 0 0 0    24
+       0 4 0 5 1 1    4
 
-000  The game ended correctly. getA3Player: 24 'Madiiboy': 24
+001  'Madiiboy' moved 3 in 0.02326798439025879 sec.
 
-000  Draw!
+29     2 0 1 0 1 0
+
+       0 4 0 5 1 1    4
+
+001  getA3Player moved 4 in 0.024975061416625977 sec.
+
+29     2 0 1 0 2 1
+
+       0 4 0 0 2 2    5
+
+001  'Madiiboy' moved 4 in 0.022975683212280273 sec.
+
+34     2 0 0 0 2 1
+
+       0 0 0 0 2 2    5
+
+001  getA3Player moved 6 in 0.01898026466369629 sec.
+
+34     2 0 0 0 2 2
+
+       0 0 0 0 2 0    6
+
+001  'Madiiboy' moved 1 in 0.014984607696533203 sec.
+
+34     2 0 0 1 3 0
+
+       0 0 0 0 2 0    6
+
+001  getA3Player moved 5 in 0.005993843078613281 sec.
+
+34     2 0 0 1 3 0
+
+       0 0 0 0 0 1    7
+
+001  getA3Player moved 6 in 0.02397465705871582 sec.
+
+34     2 0 0 1 3 0
+
+       0 0 0 0 0 0    8
+
+000  The game ended correctly. getA3Player: 8 'Madiiboy': 40
+
+000  'Madiiboy' win!
 
