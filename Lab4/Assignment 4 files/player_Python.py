@@ -151,12 +151,12 @@ class GameState():
         player2stones = 0
         for i in range(7,13):
             player2stones += state.board[i]
-        player2stones += state.board[13] * 1.5
+        player2stones += state.board[13] * 3
         '''
             Check if we are on a bonus move, if so add a value to score
         '''
         if self.bonus_move:
-            score += 1
+            score += 5
         '''
             Return the score
         '''
