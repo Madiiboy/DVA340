@@ -22,23 +22,23 @@ class NeuralNetwork:
 
         self.learning_rate = learning_rate
 
-    
+    # Sigmoid Activation Function
     def sigmoid(self, x, derivative=False):
         if derivative:
             return x * (1.0 - x)
         return 1/(1+np.exp(-x))
 
-    
+    # Softmax Activation Function
     def softmax(self, x, derivative=False):
         if derivative:
             return 1
         return np.divide(np.exp(x), (sum([np.exp(i) for i in x])))
 
+    # Propagate forward through the network, calculating outputs from layers
     def propagate_forward(self, data):
-        #print(data.shape)
-        #print(self.weights[-1].shape)
+       
         outputs = []
-        # For each weight and bias run acivation function
+        # For each weight and bias in hidden layer run Sigmoid function
         for weight, bias in zip(self.weights[:-1], self.biases[:-1]):
             data = self.sigmoid(np.matmul(weight, data) + bias)
             outputs.append(data)
@@ -49,18 +49,20 @@ class NeuralNetwork:
 
         return outputs
 
+    # Propagate backwards through the network, calculate error terms and change weights
+    # Calculate gradient of the loss function with respect to each weight by the chain rule
     def backpropagation(self, data, outputs, target):
     
-        #Create a target vector filled with 0, except the labeled index    
+        # Create a target vector filled with 0, except for index with label value    
         target_vector = np.array([1.0 if i == target else 0.0 for i in range(self.shapes[-1])]).reshape(self.shapes[-1], 1)
 
         errors = []
 
-        #Initiate our errors list with an empty list for each output
+        # Initiate our errors list with an empty list for each output
         for i in range(len(outputs)):
             errors.append([])
 
-        # Propagate backwards
+        # Propagate backwards, calculate error terms
         for i in reversed(range(len(outputs))):
 
             o = outputs[i]
@@ -69,19 +71,20 @@ class NeuralNetwork:
             if i == len(outputs) - 1:
 
                 error = np.subtract(target_vector, o)
-                # Calculate errors for nodes
+                # Calculate errors for nodes in output layer
                 errors[i] = np.multiply(self.softmax(o, True), error)
             else:
                 index = i + 1
 
-                # calculate errors
+                # Calculate errors downstream
                 error = np.matmul(self.weights[index].T, errors[index])
                 delta = np.multiply(error, self.sigmoid(o,True))
                 errors[i] = delta
 
+        # Calculate delta and change the weights accordingly
         for i in reversed(range(len(outputs))):
 
-            # The input is the previous layers output or the input data at the input layer
+            # The input is the previous layers output, or the input data at the input layer
             data_in = data.reshape((self.shapes[0], 1)) if i == 0 else outputs[i - 1]
 
             # Calculate delta for all weights
@@ -91,25 +94,29 @@ class NeuralNetwork:
 
             # Update with the new values
             self.weights[i] = np.add(self.weights[i], delta_w)
-            self.biases[i] = np.add(self.biases[i], delta_b)
+            self.biases[i]  = np.add(self.biases[i], delta_b)
 
+    # Train the network using forward- and backpropagation
     def training(self, training_data):
         print("Training initiated")
         accurate_guesses = 0
         data = []
         labels = []
+
+        # Separate label and data (I accidently normalized the labels before, oops...)
         for d in training_data:
             data.append(d[1:])
             labels.append(d[0])
 
-        #np.divide(data,255) normalizes the data
+        # np.divide(data,255) normalizes the data
         for (i, (t, label)) in enumerate(zip(np.divide(data,255), labels)):
             arr = np.array(t)
             outputs = self.propagate_forward(arr.reshape(self.shapes[0],1))
-            #print(outputs[-1])
-            #Get the index of best guess
+
+            # Get the index of best guess
             guess = np.argmax(outputs[-1])
             
+            # Increment accurate_guesses if the output was correct
             if guess == label:
                 accurate_guesses = accurate_guesses + 1
 
@@ -120,70 +127,68 @@ class NeuralNetwork:
         print(accurate_guesses)
         return accurate_guesses / len(training_data)
 
+    # Validate the current state of the network, by calculating the overall accuracy
     def validate(self, validation_data):
         print("Validation initiated")
         accurate_guesses = 0
         data = []
         labels = []
+
+        # Separate label and data
         for d in validation_data:
             data.append(d[1:])
             labels.append(d[0])
 
-        # print(len(validation_data))
+        # Propagate forward throught the network, no backpropagation
         for (i, (t, label)) in enumerate(zip(np.divide(data,255), labels)):
             arr = np.array(t)
             outputs = self.propagate_forward(arr.reshape(self.shapes[0],1))
-            #Get the index of accurate guess
+
+            # Get the index of accurate guess
             guess = np.argmax(outputs[-1])
             
             if guess == label:
                 accurate_guesses = accurate_guesses + 1
 
         # Return the accuracy of the network
-        # print(accurate_guesses)
         print(accurate_guesses, "out of", len(validation_data))
         return accurate_guesses / len(validation_data)
 
+    # Test the final accuracy of the network
     def test(self, test_data):
         print("Testing initiated")
         accurate_guesses = 0
         data = []
         labels = []
+
+        # Separate the label and data
         for d in test_data:
             data.append(d[1:])
             labels.append(d[0])
 
-
         result_deviation = np.zeros(10)
         amount_of_each = np.zeros(10)
-        # print(len(validation_data))
         for (i, (t, label)) in enumerate(zip(np.divide(data,255), labels)):
-            # print(label)
             arr = np.array(t)
             outputs = self.propagate_forward(arr.reshape(self.shapes[0],1))
             #Get the index of accurate guess
             guess = np.argmax(outputs[-1])
+
+            # Save how many of each handwritten digit exist in the test data
             amount_of_each[int(label)] += 1
 
+            # Check if correct guess
             if guess == label:
                 result_deviation[guess] += 1
                 accurate_guesses = accurate_guesses + 1
 
+        # Print the accuracy of the network
         percentage = np.divide(result_deviation, amount_of_each)
         print(percentage)
-        #objects = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-        #y_pos = np.arange(len(objects))
-        #plt.bar(y_pos, percentage, align='center', alpha=0.5)
-        #plt.xticks(y_pos, objects)
-        #plt.ylabel('Correct guesses')
-        #plt.xlabel('Digit')
-        #plt.show()
-
-        # Return the accuracy of the network
-        # print(accurate_guesses)
         print(accurate_guesses, "out of", len(test_data))
         return accurate_guesses / len(test_data)
 
+# Load all data from the csv file
 def loadAllData():
 
     data = []
@@ -192,14 +197,13 @@ def loadAllData():
         csv_reader = csv.reader(csv_file)
         next(csv_reader)
         for row in csv_reader:
-            # Normalize and append data
             data.append([float(i) for i in row])
     
     return data
 
 
 if __name__ == "__main__":
-    #Load all the data from the csv file
+    # Load all the data from the csv file
     all_data = loadAllData()
 
     # 70 % of all_data for training
@@ -211,6 +215,7 @@ if __name__ == "__main__":
     # 20 % of all_data for testing
     test = all_data[int(len(all_data)*0.8):len(all_data)]
 
+    # Shapes of network, this can be changed to add more hidden layers
     network_shapes = [784, NODES, 10]
 
     # Initiate neural network
@@ -234,10 +239,6 @@ if __name__ == "__main__":
     plt.ylabel('Accuracy')
     plt.show()
 
-    #print(nn.training(training))
-    #Divide the training set by 10
-
-    #print(nn.validate(validation))
     print(nn.test(test))
 
 
