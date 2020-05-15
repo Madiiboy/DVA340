@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 
 LEARNING_RATE = 0.1
 NODES = 128
+EPOCHS = 20
 
 class NeuralNetwork:
     def __init__(self, network_shapes, learning_rate):
@@ -74,10 +75,10 @@ class NeuralNetwork:
                 # Calculate errors for nodes in output layer
                 errors[i] = np.multiply(self.softmax(o, True), error)
             else:
-                index = i + 1
+                next_layer = i + 1
 
                 # Calculate errors downstream
-                error = np.matmul(self.weights[index].T, errors[index])
+                error = np.matmul(self.weights[next_layer].T, errors[next_layer])
                 delta = np.multiply(error, self.sigmoid(o,True))
                 errors[i] = delta
 
@@ -124,7 +125,6 @@ class NeuralNetwork:
             self.backpropagation(arr, outputs, labels[i])
 
         # Return the accuracy of the network
-        print(accurate_guesses)
         return accurate_guesses / len(training_data)
 
     # Validate the current state of the network, by calculating the overall accuracy
@@ -151,7 +151,6 @@ class NeuralNetwork:
                 accurate_guesses = accurate_guesses + 1
 
         # Return the accuracy of the network
-        print(accurate_guesses, "out of", len(validation_data))
         return accurate_guesses / len(validation_data)
 
     # Test the final accuracy of the network
@@ -190,7 +189,7 @@ class NeuralNetwork:
 
 # Load all data from the csv file
 def loadAllData():
-
+    print('Loading data.')
     data = []
     
     with open('assignment5.csv') as csv_file:
@@ -207,39 +206,36 @@ if __name__ == "__main__":
     all_data = loadAllData()
 
     # 70 % of all_data for training
-    training = all_data[0:int(len(all_data)*0.7)]
+    training_data = all_data[0:int(len(all_data)*0.7)]
 
     # 10 % of all_data for validation
-    validation = all_data[int(len(all_data)*0.7):int(len(all_data)*0.8)]
+    validation_data = all_data[int(len(all_data)*0.7):int(len(all_data)*0.8)]
 
     # 20 % of all_data for testing
-    test = all_data[int(len(all_data)*0.8):len(all_data)]
+    test_data = all_data[int(len(all_data)*0.8):len(all_data)]
 
     # Shapes of network, this can be changed to add more hidden layers
-    network_shapes = [784, NODES, 10]
+    network_shapes = [784, NODES ,10]
+    e = EPOCHS
+    lr = LEARNING_RATE
 
     # Initiate neural network
     nn = NeuralNetwork(network_shapes, LEARNING_RATE)
-    training_sets = []
-    index = 1
-    for i in range(0, len(training), int(len(training)/10)):
-        training_sets.append(training[i:int(len(training)/10)*index])
-        index += 1
 
-    training_results = []
-    validation_results = []
-    for sets in training_sets:
-        training_results.append(nn.training(sets))
-        validation_results.append(nn.validate(validation))
-    print(training_results)
-    print(validation_results)
+    for i in range(1, e+1):
+        #Change learning rate every tenth epoch
+        print('Epoch:', i)
+        if i % 10 == 0:
+            lr = lr/10
 
-    plt.plot(range(len(validation_results)), validation_results)
-    plt.xlabel('Validation')
-    plt.ylabel('Accuracy')
-    plt.show()
+        training_res = nn.training(training_data)
+        validation_res = nn.validate(validation_data)
+        print('Validation acc:',"{:.2f}".format(validation_res*100),'%')
 
-    print(nn.test(test))
+    test_res = nn.test(test_data)
+    print('Testing accuracy:', "{:.2f}".format(test_res*100), '%')
+
+
 
 
     
